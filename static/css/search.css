@@ -26,7 +26,24 @@
     overflow-y: scroll;
 }
 
+.versions-toggle {
+    display: none;
+}
+.version-type-label::before {
+    content: "[-]";
+    font-family: monospace;
+    font-weight: bolder;
+    margin-right: 5px;
+}
+.versions-toggle:checked + .version-type > .version-type-label::before {
+    content: "[+]"
+}
+.versions-toggle:checked + .version-type > .version-scroll {
+    display: none;
+}
+
 .version-type-label {
+    display: flex;
     width: 165px;
     height: 25px;
     margin-bottom: 0;
@@ -42,6 +59,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    align-items: center;
 }
 
 .version {
@@ -99,7 +117,32 @@
 .categories-label {
     color: white;
     background-color: black;
-    padding-left: 10px;
+
+    display: flex;
+    align-items: center;
+    height: 25px;
+    width: 165px;
+    padding: 2px 5px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    cursor: pointer;
+}
+.categories-label p {
+    margin: 0 auto;
+    font-weight: bolder;
+    text-transform: capitalize;
+}
+.categories-label::before {
+    content: "[-]";
+    font-family: monospace;
+    font-weight: bolder;
+}
+.categories-toggle:checked + .categories > .categories-label::before {
+    content: "[+]";
 }
 
 .category-badge {
@@ -116,6 +159,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    position: relative;
 }
 
 .category-badge img, .category-badge svg {
@@ -131,6 +175,26 @@
 
 .category-ghost {
     margin-left: 10px;
+}
+
+.category-checkbox:checked + .category-badge::after {
+    display: block;
+    position: absolute;
+    content: "";
+    background: currentColor;
+    width: 10px;
+    height: 100%;
+    right: 0;
+}
+.category-checkbox {
+    display: none;
+}
+
+.categories-toggle {
+    display: none;
+}
+.categories-toggle:checked + .categories > .category-badge {
+    display: none;
 }
 
 .search-main {
@@ -327,7 +391,7 @@
     background-color: var(--decoration-color);
 }
 
-.world-badge {
+.worldgen-badge {
 	color: white;
 	background-color: var(--world-color);
 }

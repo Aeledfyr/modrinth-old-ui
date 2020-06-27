@@ -22,15 +22,15 @@ let selectedType  = "relevance";
 let resultContainer = document.getElementById("results");
 
 window.onload = function () {
-    //Add category ghosts
-    let categories = document.getElementsByClassName("category-badge");
+    let categories = document.getElementsByClassName("category-checkbox");
 
     for (let category of categories) {
-        let ghost = document.createElement('div');
-        ghost.className = "category-ghost";
-        ghost.id = category.id + "-ghost";
-
-        category.appendChild(ghost);
+        category.addEventListener("change", function(event) {
+            // Remove "category-" from id
+            let id = event.target.id.substring(9);
+            category_inputs[id] = event.target.checked;
+            handleSearch(0);
+        })
     }
 
     //Set Initial Values based on URL
@@ -42,11 +42,11 @@ window.onload = function () {
     if(urlParams.has("f")) {
         let value = decodeURIComponent(urlParams.get("f"));
 
-        for (let key in category_inputs) {
-            if (category_inputs.hasOwnProperty(key)) {
-                if(value.includes(key)) {
-                    activateCategory(document.getElementById(key))
-                }
+        for (let key of Object.keys(category_inputs)) {
+            if(value.includes(key)) {
+                let checkbox = document.getElementById("checkbox-" + key);
+                category_inputs[key] = true;
+                checkbox.checked = true;
             }
         }
     }
@@ -84,9 +84,9 @@ window.onload = function () {
             for (let version of versions.versions) {
                 let versionElement = document.createElement('p');
                 versionElement.className = "version";
-                versionElement.innerHTML = version.id;
+                versionElement.textContent = version.id;
                 versionElement.id = version.id;
-                versionElement.setAttribute("onclick", "activateVersion(this)");
+                versionElement.addEventListener("click", function(e) { activateVersion(e.target) });
 
                 version_inputs[version.id] = false;
 
@@ -96,8 +96,6 @@ window.onload = function () {
                     snapshots.appendChild(versionElement)
                 else if (version.type === "old_alpha" || version.type === "old_beta")
                     archaic.appendChild(versionElement)
-                else
-                    versionElement.outerHTML = "";
 
                 if(urlVersions.includes(version.id)) {
                     activateVersion(versionElement);
@@ -115,14 +113,9 @@ function clearFilters() {
     for (let key in category_inputs) {
         if (category_inputs.hasOwnProperty(key)) {
             if(category_inputs[key]) {
-                let element = document.getElementById(key);
-
-                element.style.width = "165px";
-                element.style.boxShadow = "0 0";
-
-                document.getElementById(key + "-ghost").className = "category-ghost";
-
+                let checkbox = document.getElementById("checkbox-" + key);
                 category_inputs[key] = false;
+                checkbox.checked = false;
             }
         }
     }
@@ -138,37 +131,6 @@ function clearFilters() {
                 version_inputs[key] = false;
             }
         }
-    }
-
-    handleSearch(0);
-}
-
-function toggleVisibility(e) {
-    let element = e.parentElement.lastElementChild;
-
-    if (element.style.display === "none") {
-        element.style.display = "block";
-        e.innerHTML = e.innerHTML.replace("+", "-")
-    }
-    else {
-        element.style.display = "none"
-        e.innerHTML = e.innerHTML.replace("-", "+")
-    }
-}
-
-function activateCategory(element) {
-    category_inputs[element.id] = !category_inputs[element.id]
-
-    if (category_inputs[element.id]) {
-        element.style.width = "155px";
-        element.style.boxShadow = "10px 0 " + element.style.color;
-
-        document.getElementById(element.id + "-ghost").className = "";
-    } else {
-        element.style.width = "165px";
-        element.style.boxShadow = "0 0";
-
-        document.getElementById(element.id + "-ghost").className = "category-ghost";
     }
 
     handleSearch(0);

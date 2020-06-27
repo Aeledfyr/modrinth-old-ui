@@ -63,72 +63,40 @@
             </select>
         </div>
 
+        <input type="checkbox" class="categories-toggle" id="categories-toggle"/>
         <div class="categories">
-            <a class="categories-label category-badge category-active">
+            <label class="categories-label" for="categories-toggle">
                 <p>Categories</p>
-            </a>
-            <a class="tech-badge category-badge category-active" id="technology" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#tech"/></svg>
-                <p>TECH</p>
-            </a>
-            <a class="adventure-badge category-badge" id="adventure" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#adventure"/></svg>
-                <p>ADVENTURE</p>
-            </a>
-            <a class="magic-badge category-badge" id="magic" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#magic"/></svg>
-                <p>MAGIC</p>
-            </a>
-            <a class="utility-badge category-badge" id="utility" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#util"/></svg>
-                <p>UTILITY</p>
-            </a>
-            <a class="decoration-badge category-badge" id="decoration" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#decoration"/></svg>
-                <p>DECORATION</p>
-            </a>
-            <a class="library-badge category-badge" id="library" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#library"/></svg>
-                <p>LIBRARY</p>
-            </a>
-            <a class="world-badge category-badge" id="worldgen" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#world"/></svg>
-                <p>WORLDGEN</p>
-            </a>
-            <a class="cursed-badge category-badge" id="cursed" onclick="activateCategory(this)">
+            </label>
+            {{>category-badge category="technology" id="tech" icon="tech" label="TECH" }}
+            {{>category-badge category="adventure" id="adventure" icon="adventure" label="ADVENTURE" }}
+            {{>category-badge category="magic" id="magic" icon="magic" label="MAGIC" }}
+            {{>category-badge category="utility" id="utility" icon="util" label="UTILITY" }}
+            {{>category-badge category="decoration" id="decoration" icon="decoration" label="DECORATION" }}
+            {{>category-badge category="library" id="library" icon="library" label="LIBRARY" }}
+            {{>category-badge category="worldgen" id="worldgen" icon="world" label="WORLDGEN" }}
+            <input type="checkbox" id="checkbox-cursed" class="category-checkbox"/>
+            <label class="cursed-badge category-badge" id="category-cursed" for="checkbox-cursed">
                 <img alt="cursed" src="/static/images/icon/cursed.png" class="badge-image"/>
                 <p>CURSED</p>
-            </a>
-            <a class="storage-badge category-badge" id="storage" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#storage"/></svg>
-                <p>STORAGE</p>
-            </a>
-            <a class="food-badge category-badge" id="food" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#food"/></svg>
-                <p>FOOD</p>
-            </a>
-            <a class="equipment-badge category-badge" id="equipment" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#equipment"/></svg>
-                <p>EQUIPMENT</p>
-            </a>
-            <a class="misc-badge category-badge" id="misc" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#misc"/></svg>
-                <p>MISC</p>
-            </a>
+            </label>
+            {{>category-badge category="storage" id="storage" icon="storage" label="STORAGE" }}
+            {{>category-badge category="food" id="food" icon="food" label="FOOD" }}
+            {{>category-badge category="equipment" id="equipment" icon="equipment" label="EQUIPMENT" }}
+            {{>category-badge category="misc" id="misc" icon="misc" label="MISC" }}
         </div>
 
+        <input type="checkbox" class="categories-toggle" id="loaders-toggle"/>
         <div class="categories">
-            <a class="categories-label category-badge category-active">
+            <label class="categories-label" for="loaders-toggle">
                 <p>Loaders</p>
-            </a>
-            <a class="forge-badge category-badge" id="forge-icon" onclick="activateCategory(this)">
-                <svg class="forge" viewBox="0 0 90 46"><use xlink:href="/static/images/icon/spritesheet.svg#forge-alt" /></svg>
-                <p>FORGE</p>
-            </a>
-            <a class="fabric-badge category-badge" id="fabric-icon" onclick="activateCategory(this)">
+            </label>
+            {{>category-badge category="forge" id="forge" icon="forge-alt" label="FORGE" }}
+            <input type="checkbox" id="checkbox-fabric" class="category-checkbox"/>
+            <label class="fabric-badge category-badge" id="category-fabric" for="checkbox-fabric">
                 <img alt="fabric" src="/static/images/icon/fabric.png" class="badge-image"/>
                 <p>FABRIC</p>
-            </a>
+            </label>
         </div>
     </div>
 
@@ -145,23 +113,26 @@
     <div class="versions">
         <button type="button" class="clear-button" onclick="clearFilters()">Clear Filters</button>
 
+        <input type="checkbox" class="versions-toggle" id="releases-toggle" checked/>
         <div class="version-type">
-            <p class="version-type-label" onclick="toggleVisibility(this)">[+]  Releases</p>
-            <div class="version-scroll" id="releases" style="display: none">
+            <label class="version-type-label" for="releases-toggle">Releases</label>
+            <div class="version-scroll" id="releases">
 
             </div>
         </div>
 
+        <input type="checkbox" class="versions-toggle" id="snapshots-toggle" checked/>
         <div class="version-type">
-            <p class="version-type-label" onclick="toggleVisibility(this)">[+]  Snapshots</p>
-            <div class="version-scroll" id="snapshots" style="display: none">
+            <label class="version-type-label" for="snapshots-toggle">Snapshots</label>
+            <div class="version-scroll" id="snapshots">
 
             </div>
         </div>
 
+        <input type="checkbox" class="versions-toggle" id="archaic-toggle" checked/>
         <div class="version-type">
-            <p class="version-type-label" onclick="toggleVisibility(this)">[+]  Archaic</p>
-            <div class="version-scroll" id="archaic" style="display: none">
+            <label class="version-type-label" for="archaic-toggle">Archaic</label>
+            <div class="version-scroll" id="archaic">
 
             </div>
         </div>
