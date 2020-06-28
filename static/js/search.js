@@ -26,15 +26,14 @@ window.onload = function () {
     let categories = document.getElementsByClassName("category-badge");
 
     for (let category of categories) {
-        let ghost = document.createElement('div');
-        ghost.className = "category-ghost";
-        ghost.id = category.id + "-ghost";
-
-        category.appendChild(ghost);
+        if (category.classList.contains("categories-label")) continue;
+        category.addEventListener("click", function() {
+            activateCategory(category);
+        });
     }
 
     for (let header of document.getElementsByClassName("collapsible-header")) {
-        header.addEventListener("click", function(e) {
+        header.addEventListener("click", function() {
             header.classList.toggle("collapsed");
         });
     }
@@ -92,7 +91,7 @@ window.onload = function () {
                 versionElement.className = "version";
                 versionElement.innerHTML = version.id;
                 versionElement.id = version.id;
-                versionElement.setAttribute("onclick", "activateVersion(this)");
+                versionElement.addEventListener("click", function() { activateVersion(versionElement) });
 
                 version_inputs[version.id] = false;
 
@@ -102,8 +101,6 @@ window.onload = function () {
                     snapshots.appendChild(versionElement)
                 else if (version.type === "old_alpha" || version.type === "old_beta")
                     archaic.appendChild(versionElement)
-                else
-                    versionElement.outerHTML = "";
 
                 if(urlVersions.includes(version.id)) {
                     activateVersion(versionElement);
@@ -122,12 +119,7 @@ function clearFilters() {
         if (category_inputs.hasOwnProperty(key)) {
             if(category_inputs[key]) {
                 let element = document.getElementById(key);
-
-                element.style.width = "165px";
-                element.style.boxShadow = "0 0";
-
-                document.getElementById(key + "-ghost").className = "category-ghost";
-
+                element.classList.remove("category-active");
                 category_inputs[key] = false;
             }
         }
@@ -137,10 +129,7 @@ function clearFilters() {
         if (version_inputs.hasOwnProperty(key)) {
             if(version_inputs[key]) {
                 let element = document.getElementById(key);
-
-                element.style.width = "152px";
-                element.style.boxShadow = "0 0";
-
+                element.classList.remove("version-active");
                 version_inputs[key] = false;
             }
         }
@@ -150,34 +139,14 @@ function clearFilters() {
 }
 
 function activateCategory(element) {
+    element.classList.toggle("category-active");
     category_inputs[element.id] = !category_inputs[element.id]
-
-    if (category_inputs[element.id]) {
-        element.style.width = "155px";
-        element.style.boxShadow = "10px 0 " + element.style.color;
-
-        document.getElementById(element.id + "-ghost").className = "";
-    } else {
-        element.style.width = "165px";
-        element.style.boxShadow = "0 0";
-
-        document.getElementById(element.id + "-ghost").className = "category-ghost";
-    }
-
     handleSearch(0);
 }
 
 function activateVersion(element) {
     version_inputs[element.id] = !version_inputs[element.id]
-
-    if (version_inputs[element.id]) {
-        element.style.width = "142px";
-        element.style.boxShadow = "10px 0" + element.style.color;
-    } else {
-        element.style.width = "152px";
-        element.style.boxShadow = "0 0";
-    }
-
+    element.classList.toggle("version-active");
     handleSearch(0);
 }
 
@@ -287,6 +256,7 @@ function handleSearch(index) {
         }
     }
 
+    xmlHttp.overrideMimeType("text/plain");
     xmlHttp.open("POST", queryString, true);
     xmlHttp.send(null);
 }
