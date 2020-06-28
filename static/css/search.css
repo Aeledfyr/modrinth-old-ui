@@ -27,7 +27,32 @@
     overflow-y: scroll;
 }
 
+.versions-toggle {
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    position: absolute;
+    z-index: -1;
+}
+.version-type-label::before {
+    content: "[-]";
+    font-family: monospace;
+    font-weight: bolder;
+    margin-right: 5px;
+}
+.versions-toggle:checked + .version-type-label::before {
+    content: "[+]"
+}
+.versions-toggle:checked ~ .version-scroll {
+    display: none;
+}
+.versions-toggle:focus + .version-type-label {
+    z-index: 1;
+    outline: 2px solid #999;
+}
+
 .version-type-label {
+    display: flex;
     width: 165px;
     height: 25px;
     margin-bottom: 0;
@@ -121,7 +146,34 @@
 .categories-label {
     color: white;
     background-color: black;
-    padding-left: 10px;
+
+    display: flex;
+    align-items: center;
+    height: 25px;
+    width: 165px;
+    padding: 2px 5px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    cursor: pointer;
+}
+.categories-label * {
+    margin: 0 auto;
+    font-weight: bolder;
+    text-transform: capitalize;
+    font-size: 1em;
+    color: white;
+}
+.categories-label::before {
+    content: "[-]";
+    font-family: monospace;
+    font-weight: bolder;
+}
+.categories-toggle:checked + .categories-label::before {
+    content: "[+]";
 }
 
 .category-badge {
@@ -141,18 +193,6 @@
     position: relative;
 }
 
-.category-badge::after {
-    content: "";
-    display: block;
-    width: 10px;
-    height: 100%;
-    position: absolute;
-    right: 0;
-}
-.category-active::after {
-    background: currentColor;
-}
-
 .category-badge img, .category-badge svg {
     height: 23px;
     width: 23px;
@@ -162,6 +202,48 @@
     margin: 0 auto;
     font-weight: bolder;
     text-transform: capitalize;
+}
+
+.category-ghost {
+    margin-left: 10px;
+}
+
+.category-checkbox:checked + .category-badge::after {
+    display: block;
+    position: absolute;
+    content: "";
+    background: currentColor;
+    width: 10px;
+    height: 100%;
+    right: 0;
+}
+.category-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    position: absolute;
+    z-index: -1;
+}
+.category-checkbox:focus + .category-badge {
+    z-index: 1;
+    outline: 2px solid #333;
+}
+
+.categories-toggle {
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    position: absolute;
+    z-index: -1;
+}
+.categories-toggle:focus ~ .categories-label {
+    z-index: 1;
+    outline: 2px solid #999;
+    outline-offset: -2px;
+}
+.categories-toggle:checked ~ .category-badge,
+.categories-toggle:checked ~ .category-checkbox {
+    display: none;
 }
 
 .search-main {

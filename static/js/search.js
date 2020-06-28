@@ -22,20 +22,15 @@ let selectedType  = "relevance";
 let resultContainer = document.getElementById("results");
 
 window.onload = function () {
-    //Add category ghosts
-    let categories = document.getElementsByClassName("category-badge");
+    let categories = document.getElementsByClassName("category-checkbox");
 
     for (let category of categories) {
-        if (category.classList.contains("categories-label")) continue;
-        category.addEventListener("click", function() {
-            activateCategory(category);
-        });
-    }
-
-    for (let header of document.getElementsByClassName("collapsible-header")) {
-        header.addEventListener("click", function() {
-            header.classList.toggle("collapsed");
-        });
+        category.addEventListener("change", function(event) {
+            // Remove "category-" from id
+            let id = event.target.id.substring(9);
+            category_inputs[id] = event.target.checked;
+            handleSearch(0);
+        })
     }
 
     //Set Initial Values based on URL
@@ -47,11 +42,11 @@ window.onload = function () {
     if(urlParams.has("f")) {
         let value = decodeURIComponent(urlParams.get("f"));
 
-        for (let key in category_inputs) {
-            if (category_inputs.hasOwnProperty(key)) {
-                if(value.includes(key)) {
-                    activateCategory(document.getElementById(key))
-                }
+        for (let key of Object.keys(category_inputs)) {
+            if(value.includes(key)) {
+                let checkbox = document.getElementById("checkbox-" + key);
+                category_inputs[key] = true;
+                checkbox.checked = true;
             }
         }
     }
@@ -89,7 +84,7 @@ window.onload = function () {
             for (let version of versions.versions) {
                 let versionElement = document.createElement('p');
                 versionElement.className = "version";
-                versionElement.innerHTML = version.id;
+                versionElement.textContent = version.id;
                 versionElement.id = version.id;
                 versionElement.addEventListener("click", function() { activateVersion(versionElement) });
 
@@ -118,9 +113,9 @@ function clearFilters() {
     for (let key in category_inputs) {
         if (category_inputs.hasOwnProperty(key)) {
             if(category_inputs[key]) {
-                let element = document.getElementById(key);
-                element.classList.remove("category-active");
+                let checkbox = document.getElementById("checkbox-" + key);
                 category_inputs[key] = false;
+                checkbox.checked = false;
             }
         }
     }
@@ -135,12 +130,6 @@ function clearFilters() {
         }
     }
 
-    handleSearch(0);
-}
-
-function activateCategory(element) {
-    element.classList.toggle("category-active");
-    category_inputs[element.id] = !category_inputs[element.id]
     handleSearch(0);
 }
 
