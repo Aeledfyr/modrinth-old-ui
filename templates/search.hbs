@@ -69,7 +69,7 @@
         </div>
 
         <div class="categories">
-            <a class="categories-label category-badge category-active">
+            <a class="categories-label category-badge category-active collapsible-header">
                 <p>Categories</p>
             </a>
             <a class="tech-badge category-badge category-active" id="technology" onclick="activateCategory(this)">
@@ -123,7 +123,7 @@
         </div>
 
         <div class="categories">
-            <a class="categories-label category-badge category-active">
+            <a class="categories-label category-badge category-active collapsible-header">
                 <p>Loaders</p>
             </a>
             <a class="forge-badge category-badge" id="forge-icon" onclick="activateCategory(this)">
@@ -141,22 +141,22 @@
         <button type="button" class="clear-button" onclick="clearFilters()">Clear Filters</button>
 
         <div class="version-type">
-            <p class="version-type-label" onclick="toggleVisibility(this)">[+]  Releases</p>
-            <div class="version-scroll" id="releases" style="display: none">
+            <p class="version-type-label collapsible-header collapsed">Releases</p>
+            <div class="version-scroll" id="releases">
 
             </div>
         </div>
 
         <div class="version-type">
-            <p class="version-type-label" onclick="toggleVisibility(this)">[+]  Snapshots</p>
-            <div class="version-scroll" id="snapshots" style="display: none">
+            <p class="version-type-label collapsible-header collapsed">Snapshots</p>
+            <div class="version-scroll" id="snapshots">
 
             </div>
         </div>
 
         <div class="version-type">
-            <p class="version-type-label" onclick="toggleVisibility(this)">[+]  Archaic</p>
-            <div class="version-scroll" id="archaic" style="display: none">
+            <p class="version-type-label collapsible-header collapsed">Archaic</p>
+            <div class="version-scroll" id="archaic">
 
             </div>
         </div>

@@ -33,6 +33,12 @@ window.onload = function () {
         category.appendChild(ghost);
     }
 
+    for (let header of document.getElementsByClassName("collapsible-header")) {
+        header.addEventListener("click", function(e) {
+            header.classList.toggle("collapsed");
+        });
+    }
+
     //Set Initial Values based on URL
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -141,19 +147,6 @@ function clearFilters() {
     }
 
     handleSearch(0);
-}
-
-function toggleVisibility(e) {
-    let element = e.parentElement.lastElementChild;
-
-    if (element.style.display === "none") {
-        element.style.display = "block";
-        e.innerHTML = e.innerHTML.replace("+", "-")
-    }
-    else {
-        element.style.display = "none"
-        e.innerHTML = e.innerHTML.replace("-", "+")
-    }
 }
 
 function activateCategory(element) {
