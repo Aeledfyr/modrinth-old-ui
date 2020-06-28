@@ -17,16 +17,27 @@
 
 <body onscroll="loadExtra()">
 
+<div id="info-popup" aria-role="dialog">
+    <h3>Welcome to Fabricate Staging!</h3>
+    <p>Fabricate is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
+    <div class="popup-footer">
+        <small>made possible by our contributors</small>
+        <a class="button discord-button" href="https://discord.gg/JRMJpRX">Discord</a>
+        <a class="button github-button" href="https://github.com/Geometrically/fabricate">GitHub</a>
+        <button class="button exit-button" onclick="closePopup(this)">Close</button>
+    </div>
+</div>
+
 <header class="site-header">
     <div class="temp-circle-logo"></div>
     <h2>Staging</h2>
 
-    <div class="links-container">
+    <nav class="links-container">
         <a href="home">home</a>
         <a href="mods">mods</a>
         <a href="modpacks">modpacks</a>
         <a href="about">about</a>
-    </div>
+    </nav>
 </header>
 
 <svg display="none">
@@ -43,18 +54,12 @@
     <img src="/static/images/icon/up.svg" alt="up">
 </a>
 
-<div class="info-popup">
-    <h3>Welcome to Fabricate Staging!</h3>
-    <p>Fabricate is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
-    <small>made possible by our contributors</small>
-    <a class="discord-button" href="https://discord.gg/JRMJpRX">Discord</a>
-    <a class="github-button" href="https://github.com/Geometrically/fabricate">GitHub</a>
-    <a onclick="closePopup(this)" class="exit-button">Close</a>
-</div>
-
 <div class="main-flex">
-    <div class="left-flex">
+    <aside class="left-flex">
         <div class="filters">
+            <label for="filters">
+                Sort by:
+            </label>
             <select id="filters" onchange="changeSortType(this)">
                 <option value="relevance" selected="selected">Relevance</option>
                 <option value="downloads">Total Downloads</option>
@@ -63,10 +68,10 @@
             </select>
         </div>
 
-        <input type="checkbox" class="categories-toggle" id="categories-toggle"/>
         <div class="categories">
+            <input type="checkbox" class="categories-toggle" id="categories-toggle"/>
             <label class="categories-label" for="categories-toggle">
-                <p>Categories</p>
+                <h1>Categories</h1>
             </label>
             {{>category-badge category="technology" id="tech" icon="tech" label="TECH" }}
             {{>category-badge category="adventure" id="adventure" icon="adventure" label="ADVENTURE" }}
@@ -77,7 +82,7 @@
             {{>category-badge category="worldgen" id="worldgen" icon="world" label="WORLDGEN" }}
             <input type="checkbox" id="checkbox-cursed" class="category-checkbox"/>
             <label class="cursed-badge category-badge" id="category-cursed" for="checkbox-cursed">
-                <img alt="cursed" src="/static/images/icon/cursed.png" class="badge-image"/>
+                <img alt="cursed" src="/static/images/icon/cursed.png" class="badge-image" aria-hidden="true"/>
                 <p>CURSED</p>
             </label>
             {{>category-badge category="storage" id="storage" icon="storage" label="STORAGE" }}
@@ -86,57 +91,57 @@
             {{>category-badge category="misc" id="misc" icon="misc" label="MISC" }}
         </div>
 
-        <input type="checkbox" class="categories-toggle" id="loaders-toggle"/>
         <div class="categories">
+            <input type="checkbox" class="categories-toggle" id="loaders-toggle"/>
             <label class="categories-label" for="loaders-toggle">
-                <p>Loaders</p>
+                <h1>Loaders</h1>
             </label>
             {{>category-badge category="forge" id="forge" icon="forge-alt" label="FORGE" }}
             <input type="checkbox" id="checkbox-fabric" class="category-checkbox"/>
             <label class="fabric-badge category-badge" id="category-fabric" for="checkbox-fabric">
-                <img alt="fabric" src="/static/images/icon/fabric.png" class="badge-image"/>
+                <img alt="fabric" src="/static/images/icon/fabric.png" class="badge-image" aria-hidden="true"/>
                 <p>FABRIC</p>
             </label>
         </div>
-    </div>
+    </aside>
 
-    <div class="search-main">
-        <div class="search-div">
-            <input class="search-bar" type="text" id="search-input" placeholder="Search for mods..." oninput="handleSearch(0)">
-        </div>
-
-        <div id="results" class="results">
-            {{> search-results}}
-        </div>
-    </div>
-
-    <div class="versions">
+    <aside class="versions">
         <button type="button" class="clear-button" onclick="clearFilters()">Clear Filters</button>
 
-        <input type="checkbox" class="versions-toggle" id="releases-toggle" checked/>
         <div class="version-type">
+            <input type="checkbox" class="versions-toggle" id="releases-toggle" checked/>
             <label class="version-type-label" for="releases-toggle">Releases</label>
             <div class="version-scroll" id="releases">
 
             </div>
         </div>
 
-        <input type="checkbox" class="versions-toggle" id="snapshots-toggle" checked/>
         <div class="version-type">
+            <input type="checkbox" class="versions-toggle" id="snapshots-toggle" checked/>
             <label class="version-type-label" for="snapshots-toggle">Snapshots</label>
             <div class="version-scroll" id="snapshots">
 
             </div>
         </div>
 
-        <input type="checkbox" class="versions-toggle" id="archaic-toggle" checked/>
         <div class="version-type">
+            <input type="checkbox" class="versions-toggle" id="archaic-toggle" checked/>
             <label class="version-type-label" for="archaic-toggle">Archaic</label>
             <div class="version-scroll" id="archaic">
 
             </div>
         </div>
-    </div>
+    </aside>
+
+    <main class="search-main">
+        <div class="search-div">
+            <input class="search-bar" type="text" id="search-input" placeholder="Search for mods..." aria-label="Search for mods" oninput="handleSearch(0)">
+        </div>
+
+        <div id="results" class="results">
+            {{> search-results}}
+        </div>
+    </main>
 </div>
 
 <script src="/static/js/search.js"></script>

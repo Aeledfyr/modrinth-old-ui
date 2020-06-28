@@ -10,6 +10,7 @@
 }
 
 .versions {
+    order: 3;
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -27,7 +28,11 @@
 }
 
 .versions-toggle {
-    display: none;
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    position: absolute;
+    z-index: -1;
 }
 .version-type-label::before {
     content: "[-]";
@@ -35,11 +40,15 @@
     font-weight: bolder;
     margin-right: 5px;
 }
-.versions-toggle:checked + .version-type > .version-type-label::before {
+.versions-toggle:checked + .version-type-label::before {
     content: "[+]"
 }
-.versions-toggle:checked + .version-type > .version-scroll {
+.versions-toggle:checked ~ .version-scroll {
     display: none;
+}
+.versions-toggle:focus + .version-type-label {
+    z-index: 1;
+    outline: 2px solid #999;
 }
 
 .version-type-label {
@@ -83,6 +92,7 @@
 }
 
 .left-flex {
+    order: 1;
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -131,17 +141,19 @@
 
     cursor: pointer;
 }
-.categories-label p {
+.categories-label * {
     margin: 0 auto;
     font-weight: bolder;
     text-transform: capitalize;
+    font-size: 1em;
+    color: white;
 }
 .categories-label::before {
     content: "[-]";
     font-family: monospace;
     font-weight: bolder;
 }
-.categories-toggle:checked + .categories > .categories-label::before {
+.categories-toggle:checked + .categories-label::before {
     content: "[+]";
 }
 
@@ -187,17 +199,36 @@
     right: 0;
 }
 .category-checkbox {
-    display: none;
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    position: absolute;
+    z-index: -1;
+}
+.category-checkbox:focus + .category-badge {
+    z-index: 1;
+    outline: 2px solid #333;
 }
 
 .categories-toggle {
-    display: none;
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    position: absolute;
+    z-index: -1;
 }
-.categories-toggle:checked + .categories > .category-badge {
+.categories-toggle:focus ~ .categories-label {
+    z-index: 1;
+    outline: 2px solid #999;
+    outline-offset: -2px;
+}
+.categories-toggle:checked ~ .category-badge,
+.categories-toggle:checked ~ .category-checkbox {
     display: none;
 }
 
 .search-main {
+    order: 2;
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -319,7 +350,7 @@
 
 .result-author {
     text-decoration: none;
-    color: #2f92d8;
+    color: #0077ca;
 }
 
 .result-badges {
