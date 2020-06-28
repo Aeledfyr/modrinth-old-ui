@@ -17,16 +17,27 @@
 
 <body onscroll="loadExtra()">
 
+<div id="info-popup" role="dialog">
+    <h3>Welcome to Fabricate Staging!</h3>
+    <p>Fabricate is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
+    <div class="popup-footer">
+        <small>made possible by our contributors</small>
+        <a class="button discord-button" href="https://discord.gg/JRMJpRX">Discord</a>
+        <a class="button github-button" href="https://github.com/Geometrically/fabricate">GitHub</a>
+        <button class="button exit-button" onclick="closePopup(this)">Close</button>
+    </div>
+</div>
+
 <header class="site-header">
     <div class="temp-circle-logo"></div>
     <h2>Staging</h2>
 
-    <div class="links-container">
+    <nav class="links-container">
         <a href="home">home</a>
         <a href="mods">mods</a>
         <a href="modpacks">modpacks</a>
         <a href="about">about</a>
-    </div>
+    </nav>
 </header>
 
 <svg display="none">
@@ -43,18 +54,12 @@
     <img src="/static/images/icon/up.svg" alt="up">
 </a>
 
-<div class="info-popup">
-    <h3>Welcome to Fabricate Staging!</h3>
-    <p>Fabricate is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
-    <small>made possible by our contributors</small>
-    <a class="discord-button" href="https://discord.gg/JRMJpRX">Discord</a>
-    <a class="github-button" href="https://github.com/Geometrically/fabricate">GitHub</a>
-    <a onclick="closePopup(this)" class="exit-button">Close</a>
-</div>
-
 <div class="main-flex">
-    <div class="left-flex">
+    <aside class="left-flex">
         <div class="filters">
+            <label for="filters">
+                Sort by:
+            </label>
             <select id="filters" onchange="changeSortType(this)">
                 <option value="relevance" selected="selected">Relevance</option>
                 <option value="downloads">Total Downloads</option>
@@ -68,51 +73,51 @@
                 <p>Categories</p>
             </a>
             <a class="tech-badge category-badge category-active" id="technology" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#tech"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#tech"/></svg>
                 <p>TECH</p>
             </a>
             <a class="adventure-badge category-badge" id="adventure" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#adventure"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#adventure"/></svg>
                 <p>ADVENTURE</p>
             </a>
             <a class="magic-badge category-badge" id="magic" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#magic"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#magic"/></svg>
                 <p>MAGIC</p>
             </a>
             <a class="utility-badge category-badge" id="utility" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#util"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#util"/></svg>
                 <p>UTILITY</p>
             </a>
             <a class="decoration-badge category-badge" id="decoration" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#decoration"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#decoration"/></svg>
                 <p>DECORATION</p>
             </a>
             <a class="library-badge category-badge" id="library" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#library"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#library"/></svg>
                 <p>LIBRARY</p>
             </a>
-            <a class="world-badge category-badge" id="worldgen" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#world"/></svg>
+            <a class="worldgen-badge category-badge" id="worldgen" onclick="activateCategory(this)">
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#world"/></svg>
                 <p>WORLDGEN</p>
             </a>
             <a class="cursed-badge category-badge" id="cursed" onclick="activateCategory(this)">
-                <img alt="cursed" src="/static/images/icon/cursed.png" class="badge-image"/>
+                <img alt="cursed" src="/static/images/icon/cursed.png" class="badge-image" aria-hidden="true"/>
                 <p>CURSED</p>
             </a>
             <a class="storage-badge category-badge" id="storage" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#storage"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#storage"/></svg>
                 <p>STORAGE</p>
             </a>
             <a class="food-badge category-badge" id="food" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#food"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#food"/></svg>
                 <p>FOOD</p>
             </a>
             <a class="equipment-badge category-badge" id="equipment" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#equipment"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#equipment"/></svg>
                 <p>EQUIPMENT</p>
             </a>
             <a class="misc-badge category-badge" id="misc" onclick="activateCategory(this)">
-                <svg class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#misc"/></svg>
+                <svg aria-hidden="true" class="badge-image"><use xlink:href="/static/images/icon/spritesheet.svg#misc"/></svg>
                 <p>MISC</p>
             </a>
         </div>
@@ -122,27 +127,17 @@
                 <p>Loaders</p>
             </a>
             <a class="forge-badge category-badge" id="forge-icon" onclick="activateCategory(this)">
-                <svg class="forge" viewBox="0 0 90 46"><use xlink:href="/static/images/icon/spritesheet.svg#forge-alt" /></svg>
+                <svg aria-hidden="true" class="forge" viewBox="0 0 90 46"><use xlink:href="/static/images/icon/spritesheet.svg#forge-alt" /></svg>
                 <p>FORGE</p>
             </a>
             <a class="fabric-badge category-badge" id="fabric-icon" onclick="activateCategory(this)">
-                <img alt="fabric" src="/static/images/icon/fabric.png" class="badge-image"/>
+                <img alt="fabric" src="/static/images/icon/fabric.png" class="badge-image" aria-hidden="true"/>
                 <p>FABRIC</p>
             </a>
         </div>
-    </div>
+    </aside>
 
-    <div class="search-main">
-        <div class="search-div">
-            <input class="search-bar" type="text" id="search-input" placeholder="Search for mods..." oninput="handleSearch(0)">
-        </div>
-
-        <div id="results" class="results">
-            {{> search-results}}
-        </div>
-    </div>
-
-    <div class="versions">
+    <aside class="versions">
         <button type="button" class="clear-button" onclick="clearFilters()">Clear Filters</button>
 
         <div class="version-type">
@@ -165,7 +160,17 @@
 
             </div>
         </div>
-    </div>
+    </aside>
+
+    <main class="search-main">
+        <div class="search-div">
+            <input class="search-bar" type="text" id="search-input" placeholder="Search for mods..." aria-label="Search for mods" oninput="handleSearch(0)">
+        </div>
+
+        <div id="results" class="results">
+            {{> search-results}}
+        </div>
+    </main>
 </div>
 
 <script src="/static/js/search.js"></script>

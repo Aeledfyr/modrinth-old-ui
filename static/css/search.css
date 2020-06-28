@@ -10,6 +10,7 @@
 }
 
 .versions {
+    order: 3;
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -65,6 +66,7 @@
 }
 
 .left-flex {
+    order: 1;
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -134,6 +136,7 @@
 }
 
 .search-main {
+    order: 2;
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -255,7 +258,7 @@
 
 .result-author {
     text-decoration: none;
-    color: #2f92d8;
+    color: #0077ca;
 }
 
 .result-badges {
@@ -327,7 +330,7 @@
     background-color: var(--decoration-color);
 }
 
-.world-badge {
+.worldgen-badge {
 	color: white;
 	background-color: var(--world-color);
 }

@@ -4,6 +4,6 @@ window.onload = function () {
 	}
 }
 
-function closePopup(e) {
-	e.parentElement.outerHTML = "";
+function closePopup() {
+	document.getElementById("info-popup").remove();
 }

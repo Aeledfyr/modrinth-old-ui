@@ -10,7 +10,7 @@
 	--content-text: black;
 	--header-text: black;
 	--white-text: white;
-	--muted: gray;
+	--muted: #333;
 	--forge-color: #1e2d44;
 
 	--tech-color: #d01111;
@@ -157,7 +157,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #69E781;
 }
 
-.info-popup {
+#info-popup {
 	z-index: 10;
 	position: absolute;
 	width: 500px;
@@ -172,31 +172,39 @@ h1, h2, h3, h4, h5, h6 {
 	transform: translate(-50%, -50%);
 }
 
-.discord-button {
+#info-popup .button {
 	text-decoration: none;
 	border-radius: 5px;
 	padding: 5px;
 	font-weight: bold;
 	color: white;
+	border: 0px solid black;
+	cursor: pointer;
+}
+#info-popup .button:focus {
+	padding: 3px;
+	border: 2px solid black;
+}
+#info-popup .button:hover {
+	padding: 3px;
+	border: 2px solid #333;
+}
+
+.discord-button {
 	background-color: var(--library-color);
 	margin-left: 50px;
 	margin-right: 5px;
 }
 
 .github-button {
-	text-decoration: none;
-	border-radius: 5px;
-	padding: 5px;
-	font-weight: bold;
-	color: white;
 	background-color: var(--magic-color);
 	margin-right: 5px;
 }
 
 .exit-button {
-	border-radius: 5px;
-	padding: 5px;
-	font-weight: bold;
-	color: white;
 	background-color: red;
+	margin: 0;
+}
+.popup-footer {
+	display: flex;
 }
