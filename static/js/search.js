@@ -1,4 +1,3 @@
-let input = document.getElementById("search-input");
 
 let category_inputs = {
     "technology": false,
@@ -37,10 +36,10 @@ window.onload = function () {
     const urlParams = new URLSearchParams(window.location.search);
 
     if(urlParams.has("q"))
-        document.getElementById("search-input").value = decodeURIComponent(urlParams.get("q"));
+        document.getElementById("search-input").value = urlParams.get("q");
 
     if(urlParams.has("f")) {
-        let value = decodeURIComponent(urlParams.get("f"));
+        let value = urlParams.get("f");
 
         for (let key of Object.keys(category_inputs)) {
             if(value.includes(key)) {
@@ -52,10 +51,10 @@ window.onload = function () {
     }
 
     if(urlParams.has("s")) {
-        let value = decodeURIComponent(urlParams.get("s"));
+        let value = urlParams.get("s");
 
         selectedType = value;
-        document.getElementById("filters").value = value;
+        document.getElementById("sort").value = value;
     }
 
     let urlVersions = [];
@@ -141,7 +140,6 @@ function activateVersion(element) {
 
 function changeSortType(element) {
     selectedType = element.options[element.selectedIndex].value;
-
     handleSearch(0);
 }
 
@@ -158,93 +156,100 @@ function loadExtra() {
         backToTop.style.display = "none";
     }
 
-
     if(!currentlyLoadingExtra) {
         let scrollOffset = (body.scrollTop) / (body.scrollHeight - body.clientHeight);
 
         if(scrollOffset > 0.9) {
             currentOffset += 10;
-            handleSearch(currentOffset);
             currentlyLoadingExtra = true;
+            handleSearch(currentOffset);
         }
     }
 }
 
-function handleSearch(index) {
-    let queryString = "search";
+let search_input = document.getElementById("search-input");
 
-    if(input.value.length > 0) {
-        queryString += "?q=" + encodeURIComponent(input.value).replace(/%20/g,'+');
+function handleSearch(index) {
+    let query = new URLSearchParams();
+
+    if(search_input.value.length > 0) {
+        query.set("q", search_input.value.replace(/ /g,'+'));
     }
 
     let filterString = "";
     let versionString = "";
 
-    for (let key in category_inputs) {
-        if (category_inputs.hasOwnProperty(key)) {
-
-            if(category_inputs[key])
-                filterString += key + " AND keywords=";
+    let first = true;
+    for (let key of Object.keys(category_inputs)) {
+        if (category_inputs[key]) {
+            if (first) {
+                first = false;
+                filterString += "keywords=" + key;
+            } else {
+                filterString += " AND keywords=" + key;
+            }
         }
     }
 
-    let filterTakeOffLength = " AND keywords=".length;
-
-    if(filterString.length > filterTakeOffLength) {
-        filterString = filterString.substring(0, filterString.length - filterTakeOffLength)
-        queryString += "&f=" + encodeURIComponent( "keywords=" + filterString).replace(/%20/g,'+');
+    if (filterString.length > 0) {
+        query.set("f", filterString.replace(/ /g,'+'));
     }
 
-    for (let key in version_inputs)
-        if (version_inputs.hasOwnProperty(key))
-            if(version_inputs[key])
-                versionString += key + " OR versions=";
-
-    let versionTakeOffLength = " OR versions=".length;
-
-    if(versionString.length > versionTakeOffLength) {
-        versionString = versionString.substring(0, versionString.length - versionTakeOffLength)
-        queryString += "&v=" + encodeURIComponent( "versions=" + versionString).replace(/%20/g,'+');
+    first = true;
+    for (let key of Object.keys(version_inputs)) {
+        if (version_inputs[key]) {
+            if (first) {
+                first = false;
+                versionString += "versions=" + key;
+            } else {
+                versionString += " OR versions=" + key;
+            }
+        }
     }
 
-    if(selectedType)
-        queryString += "&s=" + encodeURIComponent(selectedType).replace(/%20/g,'+');
-
-
-    if(!queryString.includes("?"))
-        queryString = queryString.replace("&", "?")
-
-    if(index === 0) {
-        let viewString = queryString;
-
-        viewString = viewString.replace("?q={}{}{}", "");
-        viewString = viewString.replace("&s=relevance", "");
-
-        if(!viewString.includes("?"))
-            viewString = viewString.replace("&", "?")
-
-        window.history.pushState('Search', 'Search', viewString);
+    if (versionString.length > 0) {
+        query.set("v", versionString.replace(/%20/g,'+'));
     }
-    else
-        queryString += "&o=" + index;
+
+    if (selectedType != "relevance") {
+        query.set("s", selectedType.replace(/%20/g,'+'));
+    }
+
+
+    if (index === 0) {
+        let queryString = query.toString();
+        if (queryString.length > 0) {
+            queryString = "search?" + queryString;
+        } else {
+            queryString = "search"
+        }
+        window.history.pushState('Search', 'Search', queryString);
+    } else {
+        query.set("o", index);
+    }
+    let queryString = query.toString();
+    if (queryString.length > 0) {
+        queryString = "search?" + queryString;
+    } else {
+        queryString = "search"
+    }
 
     let xmlHttp = new XMLHttpRequest();
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-            if(index === 0) {
+            if (index === 0) {
                 resultContainer.innerHTML = xmlHttp.responseText;
 
                 currentOffset = 0;
                 currentlyLoadingExtra = false;
-            }
-            else {
+            } else {
                 resultContainer.innerHTML += xmlHttp.responseText;
                 currentlyLoadingExtra = false;
             }
         }
     }
-
+    console.log("sending search request");
     xmlHttp.overrideMimeType("text/plain");
     xmlHttp.open("POST", queryString, true);
     xmlHttp.send(null);
