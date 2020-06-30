@@ -22,11 +22,7 @@ impl HelperDef for EqualsHelper {
             .map(|v| v.value().as_object().unwrap())
             .ok_or_else(|| RenderError::new("Parameter not found!"))?;
 
-        let tmpl = if a == b {
-            h.template()
-        } else {
-            h.inverse()
-        };
+        let tmpl = if a == b { h.template() } else { h.inverse() };
 
         match tmpl {
             Some(ref t) => t.render(r, ctx, rc, out),

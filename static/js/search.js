@@ -229,9 +229,9 @@ function handleSearch(index) {
     }
     let queryString = query.toString();
     if (queryString.length > 0) {
-        queryString = "search?" + queryString;
+        queryString = "search_live?" + queryString;
     } else {
-        queryString = "search"
+        queryString = "search_live"
     }
 
     let xmlHttp = new XMLHttpRequest();
@@ -251,6 +251,6 @@ function handleSearch(index) {
     }
     console.log("sending search request");
     xmlHttp.overrideMimeType("text/plain");
-    xmlHttp.open("POST", queryString, true);
+    xmlHttp.open("GET", queryString, true);
     xmlHttp.send(null);
 }

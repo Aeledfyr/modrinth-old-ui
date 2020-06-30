@@ -1,6 +1,6 @@
 mod contains;
-mod format_human;
 mod equals;
+mod format_human;
 
 use handlebars::*;
 
