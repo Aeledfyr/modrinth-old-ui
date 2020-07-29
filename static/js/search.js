@@ -170,16 +170,25 @@ function changeSortType(element) {
 
 let body = document.documentElement;
 let backToTop = document.getElementById("backToTop");
+let wrapper = document.querySelector(".back-to-top-wrapper");
+if (wrapper.clientHeight != wrapper.scrollHeight) {
+    backToTop.style.display = "none";
+}
 
 let currentlyLoadingExtra = false;
 let currentOffset = 0;
 
 function loadExtra() {
-    if (body.scrollTop > 400) {
-        backToTop.style.display = "block";
-    } else {
+    if (wrapper.clientHeight != wrapper.scrollHeight) {
         backToTop.style.display = "none";
+    } else if (body.scrollTop > 0) {
+        backToTop.style.display = "block";
     }
+    // if (body.scrollTop > 400) {
+    //     backToTop.style.display = "block";
+    // } else {
+    //     backToTop.style.display = "none";
+    // }
 
     if(!currentlyLoadingExtra) {
         let scrollOffset = (body.scrollTop) / (body.scrollHeight - body.clientHeight);
@@ -275,6 +284,9 @@ function handleSearch(index) {
             } else {
                 resultContainer.innerHTML += xmlHttp.responseText;
                 currentlyLoadingExtra = false;
+            }
+            if (wrapper.clientHeight != wrapper.scrollHeight) {
+                backToTop.style.display = "none";
             }
         }
     }

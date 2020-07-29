@@ -1,5 +1,13 @@
+html {
+    min-height: 100%;
+    position: relative;
+}
+body {
+    height: 100%;
+}
+
 .clear-button {
-    margin: 30px auto 0 40px;
+    margin-top: 30px;
     height: 33px;
     width: 175px;
 
@@ -14,17 +22,19 @@
     display: flex;
     flex-direction: column;
     width: 25%;
+    margin-left: 20px;
 }
 
 .version-type {
     margin-top: 20px;
-    margin-left: 40px;
     margin-right: auto;
 }
 
 .version-scroll {
     height: 400px;
     overflow-y: scroll;
+    position: relative;
+    z-index: -1;
 }
 
 .versions-toggle {
@@ -45,6 +55,10 @@
 }
 .versions-toggle:checked ~ .version-scroll {
     display: none;
+}
+.versions-toggle:active + .version-type-label {
+    z-index: 1;
+    outline: 2px solid #CCC;
 }
 .versions-toggle:focus + .version-type-label {
     z-index: 1;
@@ -110,20 +124,20 @@
 }
 
 
-.left-flex {
+.filters {
     order: 1;
     display: flex;
     flex-direction: column;
     width: 25%;
+    margin-right: 20px;
 }
 
-.filters {
+.sort {
     margin-top: 30px;
-    margin-right: 25px;
     margin-left: auto;
 }
 
-.filters select {
+.sort select {
     height: 33px;
     width: 175px;
     text-align: center;
@@ -135,11 +149,14 @@
     background-image: none;
     border: 1px solid var(--border);
 }
+@media screen and (max-width: 1100px) {
+    .sort select {
+        display: block;
+    }
+}
 
 .categories {
-    margin-top: 30px;
-    padding: 5px;
-    margin-right: 20px;
+    margin-top: 20px;
     margin-left: auto;
 }
 
@@ -172,6 +189,7 @@
     content: "[-]";
     font-family: monospace;
     font-weight: bolder;
+    margin-right: 5px;
 }
 .categories-toggle:checked + .categories-label::before {
     content: "[+]";
@@ -357,22 +375,14 @@
     margin: 0;
 }
 .result-author-container {
-    white-space: nowrap;
+    word-break: break-word;
     display: inline-block;
-}
-
-@media screen and (max-width: 1340px) {
-    .result-badge.result-badge {
-        width: initial;
-    }
-    .result-badge > p {
-        display: none;
-    }
 }
 
 .result-name {
     text-decoration: none;
     color: var(--highlight);
+    word-break: break-word;
 }
 
 .result-author {
@@ -381,9 +391,9 @@
 }
 
 .result-badges {
-    margin: 0 1em 20px auto;
+    margin: 0 1em 0 auto;
     align-self: center;
-    height: 75px;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -407,6 +417,18 @@
     margin: 0 auto;
     font-weight: bolder;
     text-transform: capitalize;
+}
+
+@media screen and (max-width: 1340px) {
+    .result-badges {
+        margin-right: 5px;
+    }
+    .result-badge {
+        width: initial;
+    }
+    .result-badge > p {
+        display: none;
+    }
 }
 
 .download-badge {
@@ -491,20 +513,32 @@ svg.forge {
 	fill: var(--forge-color);
 }
 
-.back-to-top {
-    position: fixed;
-    top: 80%;
+.back-to-top-wrapper {
+    position: absolute;
+    height: 100%;
     /* left column = 25%, width ~= 90px, left column padding = 20px */
-    left: calc(25% - 90px - 20px);
+    /* left: calc(25% - 90px - 20px); */
+    right: calc(25% - 90px - 20px);
+    pointer-events: none;
+}
+.back-to-top-wrapper > .filler {
+    height: 100vh;
+}
+
+.back-to-top {
+    display: block;
+    position: sticky;
+    top: 80%;
+    padding: 10px;
     background-color: var(--highlight);
     text-align: center;
-    padding: 20px;
-    display: none;
+    pointer-events: initial;
+    z-index: 10;
 }
 
 .back-to-top img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
 }
 
 .collapsible-header::before {
@@ -518,4 +552,51 @@ svg.forge {
 }
 .collapsible-header.collapsed ~ * {
     display: none;
+}
+
+@media screen and (max-width: 900px) {
+    .main-flex {
+        display: grid;
+        grid-template-areas: "search filters"
+          "search versions"
+          "search .";
+        grid-template-columns: 1fr 210px;
+    }
+    .search-main {
+        grid-area: search;
+        width: 100%;
+    }
+    .filters {
+        grid-area: filters;
+        margin-right: 0;
+        margin-left: 20px;
+        width: calc(100% - 20px);
+    }
+    .filters * {
+        margin-left: 0;
+    }
+    .versions {
+        grid-area: versions;
+        margin-right: 0;
+        margin-left: 20px;
+        width: calc(100% - 20px);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .main-flex {
+        display: block;
+    }
+    .search-main {
+        width: 100%;
+    }
+    .filters {
+        display: none;
+    }
+    .versions {
+        display: none;
+    }
+    .back-to-top-wrapper {
+        right: 10px;
+    }
 }

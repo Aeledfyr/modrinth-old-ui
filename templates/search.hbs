@@ -17,10 +17,10 @@
 
 <body onscroll="loadExtra()">
 
-<div id="info-popup-overlay">
+<div id="info-popup-overlay" class="hidden">
     <div id="info-popup" role="dialog" aria-labelledby="info-popup-title" aria-describedby="info-popup-desc">
-        <h1 id="info-popup-title">Welcome to Fabricate Staging!</h1>
-        <p id="info-popup-desc">Fabricate is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
+        <h1 id="info-popup-title">Welcome to Modrinth Staging!</h1>
+        <p id="info-popup-desc">Modrinth is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
         <div class="popup-footer">
             <small class="contributors">made possible by our contributors</small>
             <a class="button discord-button" href="https://discord.gg/JRMJpRX">Discord</a>
@@ -31,14 +31,18 @@
 </div>
 
 <header class="site-header">
-    <div class="temp-circle-logo"></div>
-    <h2>Staging</h2>
+    <img class="modrinth-logo" src="/static/images/modrinth/logo.svg" />
+    <h1 class="modrinth-header">Modrinth</h2>
 
-    <nav class="links-container">
-        <a href="home">home</a>
-        <a href="mods">mods</a>
-        <a href="modpacks">modpacks</a>
-        <a href="about">about</a>
+    <a class="hamburger-link" href="#hamburger-nav">=</a>
+    <nav class="links-container" id="hamburger-nav">
+        <ul>
+            <li><a class="close-hamburger-link" href="#_">X</a></li>
+            <li class="nav-link"><a href="home">home</a></li>
+            <li class="nav-link"><a href="mods">mods</a></li>
+            <li class="nav-link"><a href="modpacks">modpacks</a></li>
+            <li class="nav-link"><a href="about">about</a></li>
+        </ul>
     </nav>
 </header>
 
@@ -52,13 +56,16 @@
     </symbol>
 </svg>
 
-<a href="#" class="back-to-top" id="backToTop">
-    <img src="/static/images/icon/up.svg" alt="up">
-</a>
+<div class="back-to-top-wrapper">
+    <div class="filler"></div>
+    <a href="#" class="back-to-top" id="backToTop">
+        <img src="/static/images/icon/up.svg" alt="up">
+    </a>
+</div>
 
 <div class="main-flex">
-    <aside class="left-flex">
-        <div class="filters">
+    <aside class="filters">
+        <div class="sort">
             <label for="sort">
                 Sort by:
             </label>

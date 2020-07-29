@@ -1,7 +1,6 @@
-
-use actix_web::{get, web, HttpResponse};
 use crate::error::Error;
-use serde::{Serialize, Deserialize};
+use actix_web::{get, web, HttpResponse};
+use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 
 #[derive(Serialize, Deserialize)]
@@ -39,7 +38,7 @@ impl Versions {
             .await?
             .json::<InputFormat>()
             .await?;
-        
+
         for version in input.versions.into_iter() {
             let name = version.id;
             match &*version.type_ {
@@ -55,20 +54,28 @@ impl Versions {
 }
 
 #[get("versions/all.json")]
-pub async fn versions_get(versions: web::Data<tokio::sync::RwLock<Versions>>) -> Result<HttpResponse, Error> {
+pub async fn versions_get(
+    versions: web::Data<tokio::sync::RwLock<Versions>>,
+) -> Result<HttpResponse, Error> {
     Ok(HttpResponse::Ok().json(&*versions.read().await))
 }
 
 #[get("versions/release.json")]
-pub async fn versions_release(versions: web::Data<tokio::sync::RwLock<Versions>>) -> Result<HttpResponse, Error> {
+pub async fn versions_release(
+    versions: web::Data<tokio::sync::RwLock<Versions>>,
+) -> Result<HttpResponse, Error> {
     Ok(HttpResponse::Ok().json(&*versions.read().await.release))
 }
 #[get("versions/snapshot.json")]
-pub async fn versions_snapshot(versions: web::Data<tokio::sync::RwLock<Versions>>) -> Result<HttpResponse, Error> {
+pub async fn versions_snapshot(
+    versions: web::Data<tokio::sync::RwLock<Versions>>,
+) -> Result<HttpResponse, Error> {
     Ok(HttpResponse::Ok().json(&*versions.read().await.snapshot))
 }
 #[get("versions/archaic.json")]
-pub async fn versions_archaic(versions: web::Data<tokio::sync::RwLock<Versions>>) -> Result<HttpResponse, Error> {
+pub async fn versions_archaic(
+    versions: web::Data<tokio::sync::RwLock<Versions>>,
+) -> Result<HttpResponse, Error> {
     Ok(HttpResponse::Ok().json(&*versions.read().await.archaic))
 }
 

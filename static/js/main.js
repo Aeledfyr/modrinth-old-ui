@@ -8,9 +8,19 @@ window.addEventListener("load", function() {
             closePopup();
         }
     });
+    let stored = localStorage.getItem("popup");
+    if (stored != null) {
+        let last_opened = Date.parse(stored);
+        // If it's been 3 hours, reopen the popup
+        if (Date.now() - last_opened > 3 * 60 * 60 * 1000) {
+            document.getElementById("info-popup-overlay").classList.remove("hidden");
+        }
+    } else {
+        document.getElementById("info-popup-overlay").classList.remove("hidden");
+    }
 });
 
 function closePopup() {
-    document.getElementById("info-popup").remove();
-    document.getElementById("info-popup-overlay").remove();
+    document.getElementById("info-popup-overlay").classList.add("hidden");
+    localStorage.setItem("popup", (new Date()).toISOString());
 }

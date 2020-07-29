@@ -1,6 +1,6 @@
-use thiserror::Error;
 use actix_web::http::StatusCode;
-use actix_web::{ResponseError, HttpResponse};
+use actix_web::{HttpResponse, ResponseError};
+use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {

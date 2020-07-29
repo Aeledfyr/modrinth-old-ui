@@ -11,9 +11,9 @@ use env_logger::Env;
 use handlebars::*;
 use std::env;
 
+mod error;
 mod helpers;
 mod routes;
-mod error;
 mod scheduler;
 
 #[actix_rt::main]
@@ -58,6 +58,7 @@ async fn main() -> std::io::Result<()> {
 
     // info!("Starting Actix HTTP server!");
 
+    let address = dotenv::var("BIND_ADDRESS").unwrap();
     //Init App
     HttpServer::new(move || {
         App::new()
@@ -76,7 +77,7 @@ async fn main() -> std::io::Result<()> {
             .service(routes::versions::versions_snapshot)
             .service(routes::versions::versions_archaic)
     })
-    .bind("127.0.0.1:8080")?
+    .bind(address)?
     .run()
     .await
 }

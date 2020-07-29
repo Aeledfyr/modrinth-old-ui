@@ -1,7 +1,7 @@
+use crate::error::Error;
 use actix_web::{get, web, web::Data, HttpResponse};
 use handlebars::*;
 use serde::{Deserialize, Serialize};
-use crate::error::Error;
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchRequest {
@@ -57,7 +57,7 @@ pub async fn search_get(
                 "query": info,
                 "results": mods,
             });
-        
+
             let body = hb.render("search", &data)?;
             Ok(HttpResponse::Ok().body(body))
         }
@@ -67,7 +67,7 @@ pub async fn search_get(
                 "results": [],
                 "error": error.to_string(),
             });
-        
+
             let body = hb.render("search", &data)?;
 
             Ok(HttpResponse::InternalServerError().body(body))
@@ -92,10 +92,7 @@ struct SearchMod {
     latest_version: String,
 }
 
-async fn search(
-    client: &reqwest::Client,
-    info: &SearchRequest,
-) -> Result<Vec<SearchMod>, Error> {
+async fn search(client: &reqwest::Client, info: &SearchRequest) -> Result<Vec<SearchMod>, Error> {
     let query = [
         ("query", info.query.as_ref()),
         ("filters", info.filters.as_ref()),

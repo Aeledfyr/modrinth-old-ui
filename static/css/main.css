@@ -56,21 +56,7 @@
 
 
 @media (prefers-color-scheme: dark) {
-	[data-theme="light"] {
-		--background: #f3f2f0;
-		--highlight: #0b75d8;
-		--border: #a9a9a9;
-		--mod-bar: #fefefe;
-		--content-background: white;
-		--nav-background: #dfdfdf;
-		--content-text: black;
-		--header-text: black;
-		--white-text: white;
-		--muted: gray;
-		--forge-color: #1e2d44;
-	}
-
-	:root, [data-theme="dark"] {
+	:root {
 		--background: #1b1b1b;
 		--highlight: #0b75d8;
 		--border: #1d1d1d;
@@ -82,11 +68,24 @@
 		--white-text: white;
 		--muted: gray;
 		--forge-color: white;
+		
+		--tech-color: #bf3f3f;
+		--adventure-color: #764827;
+		--magic-color: #663299;
+		--utility-color: #bf623f;
+		--decoration-color: #458ec1;
+		--world-color: #e6e62c;
+		--library-color: #cc9a3c;
+		--cursed-color: #d17695;
+		--misc-color: #3f9fbf;
+		--storage-color: #cea06c;
+		--food-color: #5975c8;
+		--equipment-color: #000000;
 	}
 }
 
 * {
-	transition: color 0.4s, background-color 0.4s, border-color 0.4s, fill 0.4s !important;
+	transition: color 0.4s, background-color 0.4s, border-color 0.4s, fill 0.4s;
 }
 
 body {
@@ -109,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--muted);
 }
 
-.temp-circle-logo {
+.modrinth-logo {
     height: 50px;
     width: 50px;
     background-color: var(--content-background);
@@ -129,19 +128,45 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
 }
 
-.site-header h2 {
+.modrinth-header {
+	font-size: 1.5em;
     color: var(--white-text);
     font-weight: bolder;
     padding: 0 20px 0 10px;
 }
 
 .links-container {
-    margin: 0 auto;
+	margin: 0 auto;
+	display: flex;
+	height: 100%;
 }
-.links-container a {
-    color: var(--white-text);
-    padding: 0 30px;
-    text-decoration: none;
+.links-container ul {
+	list-style: none;
+	margin: 0 auto;
+	display: flex;
+	height: 100%;
+}
+.links-container .nav-link a {
+	color: var(--white-text);
+	padding: 20px 30px;
+	text-decoration: none;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	border-bottom: 0px solid white;
+	height: 100%;
+}
+.links-container .nav-link a:hover {
+	padding-bottom: 15px;
+	border-bottom: 5px solid white;
+}
+
+.close-hamburger-link {
+	display: none;
+}
+.hamburger-link {
+	display: none;
 }
 
 .rounded-border {
@@ -166,6 +191,11 @@ h1, h2, h3, h4, h5, h6 {
 	height: 100%;
 	background: rgba(0, 0, 0, 0.4);
 	display: flex;
+	padding: 5px;
+	box-sizing: border-box;
+}
+#info-popup-overlay.hidden {
+	display: none;
 }
 
 #info-popup {
@@ -185,6 +215,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .popup-footer .contributors {
 	align-self: center;
+	margin-right: 5px;
 }
 
 #info-popup .button {
@@ -208,7 +239,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .discord-button {
 	--background-color: var(--library-color);
-	margin-left: 50px;
+	margin-left: auto;
 	margin-right: 5px;
 }
 
@@ -223,4 +254,86 @@ h1, h2, h3, h4, h5, h6 {
 }
 .popup-footer {
 	display: flex;
+	align-items: center;
+}
+
+@media screen and (max-width: 900px) {
+	.modrinth-logo {
+		margin-left: 20px;
+	}
+	.links-container .nav-link a {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+}
+
+@media screen and (max-width: 650px) {
+	.links-container .nav-link a {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	/* Hamburger nav */
+	.links-container {
+		display: none;
+		background: black;
+		height: auto;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	.links-container:target {
+		display: block;
+	}
+	.links-container > ul {
+		flex-direction: column;
+		padding: 0;
+		width: 200px;
+	}
+	.links-container .nav-link a {
+		border-top: 1px solid gray;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		border-left: 5px solid transparent;
+		transition: none;
+	}
+	.links-container .nav-link  a:hover {
+		padding-bottom: 10px;
+		border-bottom: none;
+		border-left: 5px solid white;
+	}
+	.hamburger-link {
+		display: block;
+		color: var(--white-text);
+		font-weight: bold;
+		text-decoration: none;
+		height: 50px;
+		width: 50px;
+		font-size: 3em;
+		line-height: 50px;
+		text-align: center;
+		margin-left: auto;
+		margin-right: 5px;
+	}
+	.close-hamburger-link {
+		display: block;
+		width: 50px;
+		height: 50px;
+		padding: 12.5px 0;
+
+		line-height: 50px;
+		margin-left: auto;
+		margin-right: 5px;
+		
+		color: var(--white-text);
+		font-weight: bold;
+		text-decoration: none;
+		text-align: center;
+		font-size: 2em;
+	}
+	.close-hamburger-link:hover {
+		font-weight: bolder;
+	}
 }

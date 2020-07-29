@@ -1,6 +1,6 @@
+use crate::error::Error;
 use actix_web::{get, web, HttpResponse};
 use handlebars::Handlebars;
-use crate::error::Error;
 
 #[get("/")]
 pub async fn index_get(hb: web::Data<Handlebars<'_>>) -> Result<HttpResponse, Error> {
