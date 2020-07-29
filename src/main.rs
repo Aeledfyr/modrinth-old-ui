@@ -2,9 +2,6 @@
 extern crate serde_json;
 
 #[macro_use]
-extern crate bson;
-
-#[macro_use]
 extern crate log;
 
 use actix_files as fs;

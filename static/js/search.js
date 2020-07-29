@@ -177,25 +177,24 @@ function handleSearch(index) {
     }
 
     let filterString = "";
+    let facets = [];
     let versionString = "";
 
-    let first = true;
     for (let key of Object.keys(category_inputs)) {
         if (category_inputs[key]) {
-            if (first) {
-                first = false;
-                filterString += "keywords=" + key;
-            } else {
-                filterString += " AND keywords=" + key;
-            }
+            facets.push(["categories:" + key])
         }
+    }
+
+    if (facets.length > 0) {
+        query.set("a", JSON.stringify(facets));
     }
 
     if (filterString.length > 0) {
         query.set("f", filterString.replace(/ /g,'+'));
     }
 
-    first = true;
+    let first = true;
     for (let key of Object.keys(version_inputs)) {
         if (version_inputs[key]) {
             if (first) {
