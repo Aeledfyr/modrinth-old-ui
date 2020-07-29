@@ -13,6 +13,8 @@ use std::env;
 
 mod helpers;
 mod routes;
+mod error;
+mod scheduler;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -35,12 +37,32 @@ async fn main() -> std::io::Result<()> {
         .unwrap();
     let client_ref = web::Data::new(client);
 
-    info!("Starting Actix HTTP server!");
+    let versions = routes::versions::Versions::get().await.unwrap();
+    let versions = actix_web::web::Data::new(tokio::sync::RwLock::new(versions));
+
+    let mut scheduler = scheduler::Scheduler::new();
+    let task_versions = versions.clone();
+    scheduler.run(std::time::Duration::from_secs(2 * 60 * 60), move || {
+        let versions = task_versions.clone();
+        async move {
+            let new_version = match routes::versions::Versions::get().await {
+                Ok(v) => v,
+                Err(e) => {
+                    warn!("Error loading new versions from Mojang: {}", e);
+                    return;
+                }
+            };
+            *versions.write().await = new_version;
+        }
+    });
+
+    // info!("Starting Actix HTTP server!");
 
     //Init App
     HttpServer::new(move || {
         App::new()
             .wrap(Logger::default())
+            .app_data(versions.clone())
             .app_data(handlebars_ref.clone())
             .app_data(client_ref.clone())
             .service(fs::Files::new("/static", "./static").show_files_listing())
@@ -49,6 +71,10 @@ async fn main() -> std::io::Result<()> {
             .service(routes::search_get)
             .service(routes::mod_page_get)
             .service(routes::mod_create_get)
+            .service(routes::versions::versions_get)
+            .service(routes::versions::versions_release)
+            .service(routes::versions::versions_snapshot)
+            .service(routes::versions::versions_archaic)
     })
     .bind("127.0.0.1:8080")?
     .run()

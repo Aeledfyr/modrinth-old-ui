@@ -1190,6 +1190,7 @@ dependencies = [
  "actix-web",
  "dotenv",
  "env_logger",
+ "futures",
  "handlebars",
  "human_format",
  "log",
@@ -1197,6 +1198,7 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror",
+ "tokio",
 ]
 
 [[package]]

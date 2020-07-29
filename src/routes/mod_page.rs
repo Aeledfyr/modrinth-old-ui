@@ -1,12 +1,13 @@
 use actix_web::{get, web, HttpResponse};
-use handlebars::*;
+use handlebars::Handlebars;
+use crate::error::Error;
 
 #[get("mod/testmod")]
-pub async fn mod_page_get(hb: web::Data<Handlebars<'_>>) -> HttpResponse {
+pub async fn mod_page_get(hb: web::Data<Handlebars<'_>>) -> Result<HttpResponse, Error> {
     let data = json!({
         "name": "Handlebars"
     });
-    let body = hb.render("mod-page", &data).unwrap();
+    let body = hb.render("mod-page", &data)?;
 
-    HttpResponse::Ok().body(body)
+    Ok(HttpResponse::Ok().body(body))
 }

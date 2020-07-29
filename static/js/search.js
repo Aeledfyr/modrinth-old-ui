@@ -20,7 +20,7 @@ let selectedType  = "relevance";
 
 let resultContainer = document.getElementById("results");
 
-window.onload = function () {
+window.addEventListener("load", function() {
     let categories = document.getElementsByClassName("category-checkbox");
 
     for (let category of categories) {
@@ -38,6 +38,26 @@ window.onload = function () {
     if(urlParams.has("q"))
         document.getElementById("search-input").value = urlParams.get("q");
 
+    if(urlParams.has("a")) {
+        let value = urlParams.get("a");
+        try {
+            let json = JSON.parse(value);
+
+            for (let array of json) {
+                for (let item of array) {
+                    let key = item.replace("categories:", "");
+                    let checkbox = document.getElementById("checkbox-" + key);
+                    category_inputs[key] = true;
+                    checkbox.checked = true;
+                }
+            }
+        } catch (e) {
+            if (!(e instanceof SyntaxError)) {
+                throw e
+            }
+        }
+    }
+    
     if(urlParams.has("f")) {
         let value = urlParams.get("f");
 
@@ -80,33 +100,38 @@ window.onload = function () {
         if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
             let versions = JSON.parse(xmlHttp.responseText);
 
-            for (let version of versions.versions) {
+            function createVersionElem(version) {
                 let versionElement = document.createElement('p');
                 versionElement.className = "version";
-                versionElement.textContent = version.id;
-                versionElement.id = version.id;
+                versionElement.textContent = version;
+                versionElement.id = version;
                 versionElement.addEventListener("click", function() { activateVersion(versionElement) });
 
-                version_inputs[version.id] = false;
-
-                if(version.type === "release")
-                    releases.appendChild(versionElement)
-                else if (version.type === "snapshot")
-                    snapshots.appendChild(versionElement)
-                else if (version.type === "old_alpha" || version.type === "old_beta")
-                    archaic.appendChild(versionElement)
-
-                if(urlVersions.includes(version.id)) {
+                version_inputs[version] = false;
+                if(urlVersions.includes(version)) {
                     activateVersion(versionElement);
                 }
+                return versionElement;
+            }
+
+            for (let version of versions.release) {
+                let versionElement = createVersionElem(version);
+                releases.appendChild(versionElement)
+            }
+            for (let version of versions.snapshot) {
+                let versionElement = createVersionElem(version);
+                snapshots.appendChild(versionElement)
+            }
+            for (let version of versions.archaic) {
+                let versionElement = createVersionElem(version);
+                archaic.appendChild(versionElement)
             }
         }
     }
 
-    xmlHttp.open("GET", "https://launchermeta.mojang.com/mc/game/version_manifest.json", true);
+    xmlHttp.open("GET", "/versions/all.json", true);
     xmlHttp.send(null);
-
-}
+});
 
 function clearFilters() {
     for (let key in category_inputs) {
@@ -170,6 +195,11 @@ function loadExtra() {
 let search_input = document.getElementById("search-input");
 
 function handleSearch(index) {
+    if (index != 0 && resultContainer.getElementsByClassName("search-error").length > 0) {
+        // If there's an error, stop infinite scrolling
+        return
+    }
+
     let query = new URLSearchParams();
 
     if(search_input.value.length > 0) {

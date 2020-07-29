@@ -17,14 +17,16 @@
 
 <body onscroll="loadExtra()">
 
-<div id="info-popup" role="dialog">
-    <h3>Welcome to Fabricate Staging!</h3>
-    <p>Fabricate is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
-    <div class="popup-footer">
-        <small>made possible by our contributors</small>
-        <a class="button discord-button" href="https://discord.gg/JRMJpRX">Discord</a>
-        <a class="button github-button" href="https://github.com/Geometrically/fabricate">GitHub</a>
-        <button class="button exit-button" onclick="closePopup(this)">Close</button>
+<div id="info-popup-overlay">
+    <div id="info-popup" role="dialog" aria-labelledby="info-popup-title" aria-describedby="info-popup-desc">
+        <h1 id="info-popup-title">Welcome to Fabricate Staging!</h1>
+        <p id="info-popup-desc">Fabricate is a work-in progress mod distribution platform that has full backwards compatibility with curseforge! Please keep in mind that we are in early beta so not everything works.</p>
+        <div class="popup-footer">
+            <small class="contributors">made possible by our contributors</small>
+            <a class="button discord-button" href="https://discord.gg/JRMJpRX">Discord</a>
+            <a class="button github-button" href="https://github.com/modrinth/labrinth">GitHub</a>
+            <button class="button exit-button" onclick="closePopup()">Close</button>
+        </div>
     </div>
 </div>
 

@@ -1,32 +1,7 @@
 use actix_web::{get, web, web::Data, HttpResponse};
 use handlebars::*;
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
-
-#[derive(Debug, Error)]
-pub enum SearchError {
-    #[error("Error connecting to backend")]
-    ConnectionError(#[from] reqwest::Error),
-    #[error("API error: {0}")]
-    ApiError(serde_json::Value),
-    #[error("Error rendering page")]
-    RenderError(#[from] handlebars::RenderError),
-}
-
-use actix_web::http::StatusCode;
-impl actix_web::ResponseError for SearchError {
-    fn status_code(&self) -> StatusCode {
-        match self {
-            SearchError::ConnectionError(..) => StatusCode::INTERNAL_SERVER_ERROR,
-            SearchError::ApiError(..) => StatusCode::INTERNAL_SERVER_ERROR,
-            SearchError::RenderError(..) => StatusCode::INTERNAL_SERVER_ERROR,
-        }
-    }
-
-    fn error_response(&self) -> HttpResponse {
-        HttpResponse::build(self.status_code()).body(self.to_string()) // TODO: error page
-    }
-}
+use crate::error::Error;
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchRequest {
@@ -49,15 +24,25 @@ pub async fn search_live(
     client: web::Data<reqwest::Client>,
     web::Query(info): web::Query<SearchRequest>,
     hb: Data<Handlebars<'_>>,
-) -> HttpResponse {
-    let results = search(&*client, &info).await.unwrap();
-    let data = json!({
-        "query": info,
-        "results": results,
-    });
-    let body = hb.render("search-results", &data).unwrap();
-
-    HttpResponse::Ok().body(body)
+) -> Result<HttpResponse, Error> {
+    match search(&*client, &info).await {
+        Ok(mods) => {
+            let data = json!({
+                "query": info,
+                "results": mods,
+            });
+            let body = hb.render("search-results", &data)?;
+            Ok(HttpResponse::Ok().body(body))
+        }
+        Err(_error) => {
+            let data = json!({
+                "query": info,
+                "error": "Internal Server Error",
+            });
+            let body = hb.render("search-error", &data)?;
+            Ok(HttpResponse::InternalServerError().body(body))
+        }
+    }
 }
 
 #[get("search")]
@@ -65,17 +50,29 @@ pub async fn search_get(
     client: web::Data<reqwest::Client>,
     web::Query(info): web::Query<SearchRequest>,
     hb: Data<Handlebars<'_>>,
-) -> Result<HttpResponse, SearchError> {
-    let results = search(&*client, &info).await?;
+) -> Result<HttpResponse, Error> {
+    match search(&*client, &info).await {
+        Ok(mods) => {
+            let data = json!({
+                "query": info,
+                "results": mods,
+            });
+        
+            let body = hb.render("search", &data)?;
+            Ok(HttpResponse::Ok().body(body))
+        }
+        Err(error) => {
+            let data = json!({
+                "query": info,
+                "results": [],
+                "error": error.to_string(),
+            });
+        
+            let body = hb.render("search", &data)?;
 
-    let data = json!({
-        "query": info,
-        "results": results,
-    });
-
-    let body = hb.render("search", &data)?;
-
-    Ok(HttpResponse::Ok().body(body))
+            Ok(HttpResponse::InternalServerError().body(body))
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -98,7 +95,7 @@ struct SearchMod {
 async fn search(
     client: &reqwest::Client,
     info: &SearchRequest,
-) -> Result<Vec<SearchMod>, SearchError> {
+) -> Result<Vec<SearchMod>, Error> {
     let query = [
         ("query", info.query.as_ref()),
         ("filters", info.filters.as_ref()),
@@ -116,6 +113,6 @@ async fn search(
     if body.status().is_success() {
         Ok(body.json().await?)
     } else {
-        Err(SearchError::ApiError(body.json().await?))
+        Err(Error::ApiError(body.json().await?))
     }
 }
