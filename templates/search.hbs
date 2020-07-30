@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="/static/js/main.js"></script>
-    <!-- TODO: Load this at start time, or don't embed in code for flexibility -->
+    {{#if analytics}}
     <script data-ad-client="ca-pub-4800120742989028" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    {{/if}}
 
     <link href="/static/css/main.css" rel="stylesheet" type="text/css">
     <link href="/static/css/search.css" rel="stylesheet" type="text/css">
@@ -59,7 +60,6 @@
 </svg>
 
 <div class="back-to-top-wrapper" aria-hidden="true">
-    <div class="filler"></div>
     <a href="#" class="back-to-top" id="backToTop" aria-label="Jump back to the beginning of the page" tabindex="-1">
         <img src="/static/images/icon/up.svg" alt="up">
     </a>

@@ -51,11 +51,17 @@ pub async fn search_get(
     web::Query(info): web::Query<SearchRequest>,
     hb: Data<Handlebars<'_>>,
 ) -> Result<HttpResponse, Error> {
+    let analytics = dotenv::var("ENABLE_ANALYTICS")
+        .ok()
+        .map(|v| v.parse::<bool>().unwrap())
+        .unwrap_or(false);
+
     match search(&*client, &info).await {
         Ok(mods) => {
             let data = json!({
                 "query": info,
                 "results": mods,
+                "analytics": analytics,
             });
 
             let body = hb.render("search", &data)?;
@@ -65,6 +71,7 @@ pub async fn search_get(
             let data = json!({
                 "query": info,
                 "results": [],
+                "analytics": analytics,
                 "error": error.to_string(),
             });
 

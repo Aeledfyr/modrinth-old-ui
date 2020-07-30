@@ -521,14 +521,14 @@ svg.forge {
 
 .back-to-top-wrapper {
     position: absolute;
+    top: 0;
     height: 100%;
     /* left column = 25%, width ~= 90px, left column padding = 20px */
     /* left: calc(25% - 90px - 20px); */
     right: calc(25% - 90px - 20px);
     pointer-events: none;
-}
-.back-to-top-wrapper > .filler {
-    height: 100vh;
+    overflow: -moz-hidden-unscrollable;
+    overflow: clip;
 }
 
 .back-to-top {
@@ -540,6 +540,7 @@ svg.forge {
     text-align: center;
     pointer-events: initial;
     z-index: 10;
+    margin-top: 100vh;
 }
 
 .back-to-top img {
