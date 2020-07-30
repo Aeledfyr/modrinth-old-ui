@@ -16,23 +16,23 @@ let category_inputs = {
     "fabric": false,
 }
 let version_inputs = {};
-let selectedType  = "relevance";
+let selectedType = "relevance";
 
 let resultContainer = document.getElementById("results");
 
 let category_toggles = document.getElementsByClassName("categories-toggle");
 for (let elem of category_toggles) {
     elem.parentElement.setAttribute("aria-expanded", !elem.checked);
-    elem.addEventListener("change", function() {
+    elem.addEventListener("change", function () {
         elem.parentElement.setAttribute("aria-expanded", !elem.checked);
     });
 }
 
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     let categories = document.getElementsByClassName("category-checkbox");
 
     for (let category of categories) {
-        category.addEventListener("change", function(event) {
+        category.addEventListener("change", function () {
             // Remove "category-" from id
             let id = category.id.substring(9);
             category_inputs[id] = category.checked;
@@ -43,10 +43,10 @@ window.addEventListener("load", function() {
     //Set Initial Values based on URL
     const urlParams = new URLSearchParams(window.location.search);
 
-    if(urlParams.has("q"))
+    if (urlParams.has("q"))
         document.getElementById("search-input").value = urlParams.get("q");
 
-    if(urlParams.has("a")) {
+    if (urlParams.has("a")) {
         let value = urlParams.get("a");
         try {
             let json = JSON.parse(value);
@@ -65,12 +65,12 @@ window.addEventListener("load", function() {
             }
         }
     }
-    
-    if(urlParams.has("f")) {
+
+    if (urlParams.has("f")) {
         let value = urlParams.get("f");
 
         for (let key of Object.keys(category_inputs)) {
-            if(value.includes(key)) {
+            if (value.includes(key)) {
                 let checkbox = document.getElementById("checkbox-" + key);
                 category_inputs[key] = true;
                 checkbox.checked = true;
@@ -78,7 +78,7 @@ window.addEventListener("load", function() {
         }
     }
 
-    if(urlParams.has("s")) {
+    if (urlParams.has("s")) {
         let value = urlParams.get("s");
 
         selectedType = value;
@@ -87,7 +87,7 @@ window.addEventListener("load", function() {
 
     let urlVersions = [];
 
-    if(urlParams.has("v")) {
+    if (urlParams.has("v")) {
         let versionsString = urlParams.get("v");
 
         versionsString = versionsString.replace(/ /g, '');
@@ -104,23 +104,23 @@ window.addEventListener("load", function() {
 
     let xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.onreadystatechange = function() {
+    function createVersionElem(version) {
+        let versionElement = document.createElement('p');
+        versionElement.className = "version";
+        versionElement.textContent = version;
+        versionElement.id = version;
+        versionElement.addEventListener("click", function () { activateVersion(versionElement) });
+
+        version_inputs[version] = false;
+        if (urlVersions.includes(version)) {
+            activateVersion(versionElement);
+        }
+        return versionElement;
+    }
+
+    xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
             let versions = JSON.parse(xmlHttp.responseText);
-
-            function createVersionElem(version) {
-                let versionElement = document.createElement('p');
-                versionElement.className = "version";
-                versionElement.textContent = version;
-                versionElement.id = version;
-                versionElement.addEventListener("click", function() { activateVersion(versionElement) });
-
-                version_inputs[version] = false;
-                if(urlVersions.includes(version)) {
-                    activateVersion(versionElement);
-                }
-                return versionElement;
-            }
 
             for (let version of versions.release) {
                 let versionElement = createVersionElem(version);
@@ -142,23 +142,19 @@ window.addEventListener("load", function() {
 });
 
 function clearFilters() {
-    for (let key in category_inputs) {
-        if (category_inputs.hasOwnProperty(key)) {
-            if(category_inputs[key]) {
-                let checkbox = document.getElementById("checkbox-" + key);
-                category_inputs[key] = false;
-                checkbox.checked = false;
-            }
+    for (let key of Object.keys(category_inputs)) {
+        if (category_inputs[key]) {
+            let checkbox = document.getElementById("checkbox-" + key);
+            category_inputs[key] = false;
+            checkbox.checked = false;
         }
     }
 
-    for (let key in version_inputs) {
-        if (version_inputs.hasOwnProperty(key)) {
-            if(version_inputs[key]) {
-                let element = document.getElementById(key);
-                element.classList.remove("version-active");
-                version_inputs[key] = false;
-            }
+    for (let key in Object.keys(version_inputs)) {
+        if (version_inputs[key]) {
+            let element = document.getElementById(key);
+            element.classList.remove("version-active");
+            version_inputs[key] = false;
         }
     }
 
@@ -193,10 +189,10 @@ function loadExtra() {
         backToTop.style.display = "block";
     }
 
-    if(!currentlyLoadingExtra) {
+    if (!currentlyLoadingExtra) {
         let scrollOffset = (body.scrollTop) / (body.scrollHeight - body.clientHeight);
 
-        if(scrollOffset > 0.9) {
+        if (scrollOffset > 0.9) {
             currentOffset += 10;
             currentlyLoadingExtra = true;
             handleSearch(currentOffset);
@@ -214,8 +210,8 @@ function handleSearch(index) {
 
     let query = new URLSearchParams();
 
-    if(search_input.value.length > 0) {
-        query.set("q", search_input.value.replace(/ /g,'+'));
+    if (search_input.value.length > 0) {
+        query.set("q", search_input.value.replace(/ /g, '+'));
     }
 
     let filterString = "";
@@ -233,7 +229,7 @@ function handleSearch(index) {
     }
 
     if (filterString.length > 0) {
-        query.set("f", filterString.replace(/ /g,'+'));
+        query.set("f", filterString.replace(/ /g, '+'));
     }
 
     let first = true;
@@ -249,11 +245,11 @@ function handleSearch(index) {
     }
 
     if (versionString.length > 0) {
-        query.set("v", versionString.replace(/%20/g,'+'));
+        query.set("v", versionString.replace(/%20/g, '+'));
     }
 
     if (selectedType != "relevance") {
-        query.set("s", selectedType.replace(/%20/g,'+'));
+        query.set("s", selectedType.replace(/%20/g, '+'));
     }
 
 
@@ -277,7 +273,7 @@ function handleSearch(index) {
 
     let xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
             if (index === 0) {
                 resultContainer.innerHTML = xmlHttp.responseText;

@@ -13,7 +13,7 @@
 }
 
 .mod-navigation p {
-    transform:scale(1,2);
+    transform: scale(1, 2);
 }
 
 .navigation-pointer {
@@ -134,10 +134,10 @@
 .search-bar {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	color: var(--content-text);
-	background-color: var(--content-background);
-	border-color: var(--border);
+    box-sizing: border-box;
+    color: var(--content-text);
+    background-color: var(--content-background);
+    border-color: var(--border);
     width: 100%;
     margin-top: 5px;
     margin-bottom: 25px;

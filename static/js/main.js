@@ -1,9 +1,9 @@
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     if (localStorage.getItem("data-theme")) {
         document.documentElement.setAttribute("data-theme", localStorage.getItem("data-theme"));
     }
     let overlay = document.getElementById("info-popup-overlay");
-    overlay.addEventListener("click", function(e) {
+    overlay.addEventListener("click", function (e) {
         if (e.target == overlay) {
             closePopup();
         }

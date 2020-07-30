@@ -5,8 +5,13 @@
     flex-direction: column;
 }
 
-progress::-webkit-progress-value { background: #0b75d8; }
-progress::-moz-progress-bar { background: #0b75d8; }
+progress::-webkit-progress-value {
+    background: #0b75d8;
+}
+
+progress::-moz-progress-bar {
+    background: #0b75d8;
+}
 
 .creation-progress-bar {
     -webkit-appearance: none;
