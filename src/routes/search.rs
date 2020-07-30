@@ -115,7 +115,13 @@ async fn search(client: &reqwest::Client, info: &SearchRequest) -> Result<Vec<Se
         .await?;
 
     if body.status().is_success() {
-        Ok(body.json().await?)
+        let mut mods = body.json::<Vec<SearchMod>>().await?;
+        for m in &mut mods {
+            if m.icon_url.is_empty() {
+                m.icon_url = String::from("/static/images/icon/missing.svg");
+            }
+        }
+        Ok(mods)
     } else {
         Err(Error::ApiError(body.json().await?))
     }

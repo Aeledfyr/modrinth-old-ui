@@ -102,8 +102,6 @@ window.addEventListener("load", function () {
     let snapshots = document.getElementById("snapshots");
     let archaic = document.getElementById("archaic");
 
-    let xmlHttp = new XMLHttpRequest();
-
     function createVersionElem(version) {
         let versionElement = document.createElement('p');
         versionElement.className = "version";
@@ -118,27 +116,38 @@ window.addEventListener("load", function () {
         return versionElement;
     }
 
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-            let versions = JSON.parse(xmlHttp.responseText);
-
-            for (let version of versions.release) {
+    function loadVersions(version_type, container) {
+        let request = new XMLHttpRequest();
+        request.addEventListener("load", function() {
+            let versions = JSON.parse(request.responseText);
+            for (let version of versions) {
                 let versionElement = createVersionElem(version);
-                releases.appendChild(versionElement)
+                container.appendChild(versionElement);
             }
-            for (let version of versions.snapshot) {
-                let versionElement = createVersionElem(version);
-                snapshots.appendChild(versionElement)
-            }
-            for (let version of versions.archaic) {
-                let versionElement = createVersionElem(version);
-                archaic.appendChild(versionElement)
-            }
-        }
+        });
+        request.open("GET", "/versions/" + version_type + ".json", true);
+        request.send();
     }
 
-    xmlHttp.open("GET", "/versions/all.json", true);
-    xmlHttp.send(null);
+    loadVersions("release", releases);
+
+    let snapshots_toggle = document.getElementById("snapshots-toggle");
+    if (!snapshots_toggle.checked) {
+        loadVersions("snapshot", snapshots);
+    } else {
+        snapshots_toggle.addEventListener("change", function() {
+            loadVersions("snapshot", snapshots);
+        }, { once: true });
+    }
+
+    let archaic_toggle = document.getElementById("archaic-toggle");
+    if (!archaic_toggle.checked) {
+        loadVersions("archaic", archaic);
+    } else {
+        archaic_toggle.addEventListener("change", function() {
+            loadVersions("archaic", archaic);
+        }, { once: true });
+    }
 });
 
 function clearFilters() {

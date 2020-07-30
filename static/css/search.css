@@ -35,7 +35,7 @@ body {
     height: 400px;
     overflow-y: scroll;
     position: relative;
-    z-index: -1;
+    background: var(--content-background);
 }
 
 .versions-toggle {
@@ -564,6 +564,10 @@ svg.forge {
     overflow: clip;
 }
 
+.back-to-top:focus {
+    border: 2px solid red;
+}
+
 .back-to-top {
     display: block;
     position: sticky;
@@ -572,7 +576,7 @@ svg.forge {
     background-color: var(--highlight);
     text-align: center;
     pointer-events: initial;
-    z-index: 10;
+    z-index: 9;
     margin-top: 100vh;
 }
 

@@ -63,6 +63,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .wrap(Logger::default())
+            .wrap(actix_web::middleware::Compress::default())
             .app_data(versions.clone())
             .app_data(handlebars_ref.clone())
             .app_data(client_ref.clone())

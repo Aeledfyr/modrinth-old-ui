@@ -6,8 +6,8 @@
                 <a class="result-name" href="{{this.page_url}}"><h2>{{this.title}}</h2></a><!--
                 --><address class="muted result-author-container">by <a class="result-author" href="{{this.author_url}}" rel="author">{{this.author}}</a></address>
             </header>
-            <p>{{this.description}}</p>
-            <footer class="mod-info">
+            <p aria-label="Mod description">{{this.description}}</p>
+            <footer class="mod-info" aria-label="Mod info">
                 <span class="mod-downloads" title="Download count">
                     <svg role="img" aria-label="Download count"><use href="/static/images/icon/spritesheet.svg#download"/></svg><!--
                     -->{{format this.downloads}}
