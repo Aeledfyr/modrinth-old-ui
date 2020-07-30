@@ -210,6 +210,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     position: relative;
+    text-transform: uppercase;
 }
 
 .category-badge img, .category-badge svg {
@@ -220,7 +221,6 @@ body {
 .category-badge p {
     margin: 0 auto;
     font-weight: bolder;
-    text-transform: capitalize;
 }
 
 .category-ghost {
@@ -406,6 +406,7 @@ body {
     margin: 2px 0;
     padding: 2px 5px;
     width: 155px;
+    text-transform: uppercase;
 }
 
 .result-badge img, .result-badge svg {
@@ -416,7 +417,6 @@ body {
 .result-badge p {
     margin: 0 auto;
     font-weight: bolder;
-    text-transform: capitalize;
 }
 
 @media screen and (max-width: 1340px) {
@@ -427,7 +427,13 @@ body {
         width: initial;
     }
     .result-badge > p {
-        display: none;
+        visibility: hidden;
+        width: 0;
+        position: absolute;
+        left: 0;
+    }
+    .badge-image {
+        padding: 0 5px;
     }
 }
 

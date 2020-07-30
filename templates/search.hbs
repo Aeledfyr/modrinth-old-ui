@@ -31,7 +31,7 @@
 </div>
 
 <header class="site-header">
-    <img class="modrinth-logo" src="/static/images/modrinth/logo.svg" />
+    <img class="modrinth-logo" src="/static/images/modrinth/logo.svg" alt="Modrinth Logo"/>
     <h1 class="modrinth-header">Modrinth</h2>
 
     <a class="hamburger-link" href="#hamburger-nav">=</a>
@@ -46,7 +46,7 @@
     </nav>
 </header>
 
-<svg display="none">
+<svg display="none" aria-hidden="true">
     <symbol viewBox="0 0 120 66.7" id="forge">
         <path d="M91.6,16.7l-37.8-1.9l46.2,0v-3.7H47.8l0,7.8v6.2c0,0.1-1.5-9.1-1.9-11.7h-4.1v6.8v6.2
                     c0,0.1-1.8-10.9-1.9-12.3c-10.4,0-27.9,0-27.9,0c1.9,1.6,12.4,10.6,19.9,14.3c3.7,1.8,8.3,1.9,12.4,2c2.1,0.1,4.2,0.2,5.8,1.8
@@ -56,15 +56,15 @@
     </symbol>
 </svg>
 
-<div class="back-to-top-wrapper">
+<div class="back-to-top-wrapper" aria-hidden="true">
     <div class="filler"></div>
-    <a href="#" class="back-to-top" id="backToTop">
+    <a href="#" class="back-to-top" id="backToTop" aria-label="Jump back to the beginning of the page" tabindex="-1">
         <img src="/static/images/icon/up.svg" alt="up">
     </a>
 </div>
 
 <div class="main-flex">
-    <aside class="filters">
+    <aside class="filters" aria-label="Search category filters">
         <div class="sort">
             <label for="sort">
                 Sort by:
@@ -82,22 +82,22 @@
             <label class="categories-label" for="categories-toggle">
                 <h1>Categories</h1>
             </label>
-            {{>category-badge category="technology" id="tech" icon="tech" label="TECH" }}
-            {{>category-badge category="adventure" id="adventure" icon="adventure" label="ADVENTURE" }}
-            {{>category-badge category="magic" id="magic" icon="magic" label="MAGIC" }}
-            {{>category-badge category="utility" id="utility" icon="util" label="UTILITY" }}
-            {{>category-badge category="decoration" id="decoration" icon="decoration" label="DECORATION" }}
-            {{>category-badge category="library" id="library" icon="library" label="LIBRARY" }}
-            {{>category-badge category="worldgen" id="worldgen" icon="world" label="WORLDGEN" }}
+            {{>category-badge category="technology" id="tech" icon="tech" label="Tech" }}
+            {{>category-badge category="adventure" id="adventure" icon="adventure" label="Adventure" }}
+            {{>category-badge category="magic" id="magic" icon="magic" label="Magic" }}
+            {{>category-badge category="utility" id="utility" icon="util" label="Utility" }}
+            {{>category-badge category="decoration" id="decoration" icon="decoration" label="Decoration" }}
+            {{>category-badge category="library" id="library" icon="library" label="Library" }}
+            {{>category-badge category="worldgen" id="worldgen" icon="world" label="Worldgen" }}
             <input type="checkbox" id="checkbox-cursed" class="category-checkbox"/>
             <label class="cursed-badge category-badge" id="category-cursed" for="checkbox-cursed">
                 <img alt="cursed" src="/static/images/icon/cursed.png" class="badge-image" aria-hidden="true"/>
-                <p>CURSED</p>
+                <p>Cursed</p>
             </label>
-            {{>category-badge category="storage" id="storage" icon="storage" label="STORAGE" }}
-            {{>category-badge category="food" id="food" icon="food" label="FOOD" }}
-            {{>category-badge category="equipment" id="equipment" icon="equipment" label="EQUIPMENT" }}
-            {{>category-badge category="misc" id="misc" icon="misc" label="MISC" }}
+            {{>category-badge category="storage" id="storage" icon="storage" label="Storage" }}
+            {{>category-badge category="food" id="food" icon="food" label="Food" }}
+            {{>category-badge category="equipment" id="equipment" icon="equipment" label="Equipment" }}
+            {{>category-badge category="misc" id="misc" icon="misc" label="Misc" }}
         </div>
 
         <div class="categories">
@@ -105,16 +105,16 @@
             <label class="categories-label" for="loaders-toggle">
                 <h1>Loaders</h1>
             </label>
-            {{>category-badge category="forge" id="forge" icon="forge-alt" label="FORGE" }}
+            {{>category-badge category="forge" id="forge" icon="forge-alt" label="Forge" }}
             <input type="checkbox" id="checkbox-fabric" class="category-checkbox"/>
             <label class="fabric-badge category-badge" id="category-fabric" for="checkbox-fabric">
                 <img alt="fabric" src="/static/images/icon/fabric.png" class="badge-image" aria-hidden="true"/>
-                <p>FABRIC</p>
+                <p>Fabric</p>
             </label>
         </div>
     </aside>
 
-    <aside class="versions">
+    <aside class="versions" aria-label="Search version filters">
         <button type="button" class="clear-button" onclick="clearFilters()">Clear Filters</button>
 
         <div class="version-type">

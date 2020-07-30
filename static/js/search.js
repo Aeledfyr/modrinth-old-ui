@@ -20,14 +20,22 @@ let selectedType  = "relevance";
 
 let resultContainer = document.getElementById("results");
 
+let category_toggles = document.getElementsByClassName("categories-toggle");
+for (let elem of category_toggles) {
+    elem.parentElement.setAttribute("aria-expanded", !elem.checked);
+    elem.addEventListener("change", function() {
+        elem.parentElement.setAttribute("aria-expanded", !elem.checked);
+    });
+}
+
 window.addEventListener("load", function() {
     let categories = document.getElementsByClassName("category-checkbox");
 
     for (let category of categories) {
         category.addEventListener("change", function(event) {
             // Remove "category-" from id
-            let id = event.target.id.substring(9);
-            category_inputs[id] = event.target.checked;
+            let id = category.id.substring(9);
+            category_inputs[id] = category.checked;
             handleSearch(0);
         })
     }
@@ -184,11 +192,6 @@ function loadExtra() {
     } else if (body.scrollTop > 0) {
         backToTop.style.display = "block";
     }
-    // if (body.scrollTop > 400) {
-    //     backToTop.style.display = "block";
-    // } else {
-    //     backToTop.style.display = "none";
-    // }
 
     if(!currentlyLoadingExtra) {
         let scrollOffset = (body.scrollTop) / (body.scrollHeight - body.clientHeight);
