@@ -280,26 +280,23 @@ function handleSearch(index) {
         queryString = "search_live"
     }
 
-    let xmlHttp = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
 
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-            if (index === 0) {
-                resultContainer.innerHTML = xmlHttp.responseText;
-
-                currentOffset = 0;
-                currentlyLoadingExtra = false;
-            } else {
-                resultContainer.innerHTML += xmlHttp.responseText;
-                currentlyLoadingExtra = false;
-            }
-            if (wrapper.clientHeight != wrapper.scrollHeight) {
-                backToTop.style.display = "none";
-            }
+    request.addEventListener("load", function() {
+        if (index === 0) {
+            currentOffset = 0;
+            resultContainer.innerHTML = request.responseText;
+            currentlyLoadingExtra = false;
+        } else {
+            resultContainer.innerHTML += request.responseText;
+            currentlyLoadingExtra = false;
         }
-    }
+        if (wrapper.clientHeight != wrapper.scrollHeight) {
+            backToTop.style.display = "none";
+        }
+    });
     console.log("sending search request");
-    xmlHttp.overrideMimeType("text/plain");
-    xmlHttp.open("GET", queryString, true);
-    xmlHttp.send(null);
+    request.overrideMimeType("text/plain");
+    request.open("GET", queryString, true);
+    request.send(null);
 }

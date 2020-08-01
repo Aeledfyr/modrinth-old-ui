@@ -34,10 +34,10 @@ pub async fn search_live(
             let body = hb.render("search-results", &data)?;
             Ok(HttpResponse::Ok().body(body))
         }
-        Err(_error) => {
+        Err(error) => {
             let data = json!({
                 "query": info,
-                "error": "Internal Server Error",
+                "error": error.to_string(),
             });
             let body = hb.render("search-error", &data)?;
             Ok(HttpResponse::InternalServerError().body(body))
@@ -120,6 +120,9 @@ async fn search(client: &reqwest::Client, info: &SearchRequest) -> Result<Vec<Se
             if m.icon_url.is_empty() {
                 m.icon_url = String::from("/static/images/icon/missing.svg");
             }
+            // Convert ISO date to YYYY-MM-DD
+            m.date_created.truncate(10);
+            m.date_modified.truncate(10);
         }
         Ok(mods)
     } else {
