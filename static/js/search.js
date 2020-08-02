@@ -1,19 +1,19 @@
 
 let category_inputs = {
-    "technology": false,
-    "adventure": false,
-    "magic": false,
-    "utility": false,
-    "decoration": false,
-    "library": false,
-    "worldgen": false,
-    "cursed": false,
-    "storage": false,
-    "food": false,
-    "equipment": false,
-    "misc": false,
-    "forge": false,
-    "fabric": false,
+    "categories:technology": false,
+    "categories:adventure": false,
+    "categories:magic": false,
+    "categories:utility": false,
+    "categories:decoration": false,
+    "categories:library": false,
+    "categories:worldgen": false,
+    "categories:cursed": false,
+    "categories:storage": false,
+    "categories:food": false,
+    "categories:equipment": false,
+    "categories:misc": false,
+    "categories:forge": false,
+    "categories:fabric": false,
 }
 let version_inputs = {};
 let selectedType = "relevance";
@@ -34,7 +34,7 @@ window.addEventListener("load", function () {
     for (let category of categories) {
         category.addEventListener("change", function () {
             // Remove "category-" from id
-            let id = category.id.substring(9);
+            let id = "categories:" + category.id.substring(9);
             category_inputs[id] = category.checked;
             handleSearch(0);
         })
@@ -52,11 +52,14 @@ window.addEventListener("load", function () {
             let json = JSON.parse(value);
 
             for (let array of json) {
-                for (let item of array) {
-                    let key = item.replace("categories:", "");
-                    let checkbox = document.getElementById("checkbox-" + key);
+                for (let key of array) {
                     category_inputs[key] = true;
-                    checkbox.checked = true;
+                    try {
+                        let checkbox = document.getElementById("checkbox-" + key.replace("categories:", ""));
+                        checkbox.checked = true;
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
             }
         } catch (e) {
@@ -153,9 +156,13 @@ window.addEventListener("load", function () {
 function clearFilters() {
     for (let key of Object.keys(category_inputs)) {
         if (category_inputs[key]) {
-            let checkbox = document.getElementById("checkbox-" + key);
             category_inputs[key] = false;
-            checkbox.checked = false;
+            try {
+                let checkbox = document.getElementById("checkbox-" + key.replace("categories:", ""));
+                checkbox.checked = false;
+            } catch (e) {
+                console.error(e);
+            }
         }
     }
 
@@ -229,7 +236,7 @@ function handleSearch(index) {
 
     for (let key of Object.keys(category_inputs)) {
         if (category_inputs[key]) {
-            facets.push(["categories:" + key])
+            facets.push([key])
         }
     }
 
