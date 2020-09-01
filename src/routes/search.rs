@@ -108,8 +108,10 @@ async fn search(client: &reqwest::Client, info: &SearchRequest) -> Result<Vec<Se
         ("offset", info.offset.as_ref()),
         ("index", info.index.as_ref()),
     ];
+
+    let api_url = dotenv::var("API_URL").expect("API_URL must be specified");
     let body = client
-        .get("http://localhost:8000/api/v1/mod")
+        .get(&format!("{}/api/v1/mod", api_url))
         .query(&query)
         .send()
         .await?;
